@@ -1,47 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculaor</title>
+    <title>Advanced Calculator</title>
     <link rel="stylesheet" href="./styles.css" />
 </head>
-
 <body>
-    <div class="outer">
-        <div class="output">
-            <div class="previous-operand"></div>
-            <div id = "display" class="current-operand"><p></p></div>
+    <div id="app">
+        <!-- Theme & Mode Controls -->
+        <header id="header">
+            <h1>Advanced Calculator</h1>
+            <div class="header-controls">
+                <button id="theme-toggle" title="Toggle Theme">🌙</button>
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="standard">Standard</button>
+                    <button class="mode-tab" data-mode="scientific">Scientific</button>
+                    <button class="mode-tab" data-mode="programmer">Programmer</button>
+                    <button class="mode-tab" data-mode="graphing">Graphing</button>
+                    <button class="mode-tab" data-mode="converter">Converter</button>
+                    <button class="mode-tab" data-mode="matrix">Matrix</button>
+                    <button class="mode-tab" data-mode="statistics">Statistics</button>
+                    <button class="mode-tab" data-mode="date">Date</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- History Panel -->
+            <aside id="history-panel" class="panel">
+                <div class="panel-header">
+                    <h3>History</h3>
+                    <button id="clear-history" title="Clear History">✕</button>
+                </div>
+                <ul id="history-list"></ul>
+            </aside>
+
+            <!-- Calculator Body -->
+            <main id="calc-body">
+
+                <!-- ============ STANDARD MODE ============ -->
+                <section id="mode-standard" class="calc-mode active">
+                    <div class="display">
+                        <div class="expression" id="std-expression"></div>
+                        <div class="result" id="std-result">0</div>
+                    </div>
+                    <div class="memory-bar">
+                        <button data-mem="mc">MC</button>
+                        <button data-mem="mr">MR</button>
+                        <button data-mem="m+">M+</button>
+                        <button data-mem="m-">M−</button>
+                        <button data-mem="ms">MS</button>
+                    </div>
+                    <div class="btn-grid standard-grid">
+                        <button data-val="%" class="op">%</button>
+                        <button data-val="ce" class="op">CE</button>
+                        <button data-val="clear" class="op">C</button>
+                        <button data-val="del" class="op">⌫</button>
+
+                        <button data-val="1/x" class="op">1/x</button>
+                        <button data-val="x^2" class="op">x²</button>
+                        <button data-val="sqrt" class="op">√x</button>
+                        <button data-val="/" class="op">÷</button>
+
+                        <button data-val="7">7</button>
+                        <button data-val="8">8</button>
+                        <button data-val="9">9</button>
+                        <button data-val="*" class="op">×</button>
+
+                        <button data-val="4">4</button>
+                        <button data-val="5">5</button>
+                        <button data-val="6">6</button>
+                        <button data-val="-" class="op">−</button>
+
+                        <button data-val="1">1</button>
+                        <button data-val="2">2</button>
+                        <button data-val="3">3</button>
+                        <button data-val="+" class="op">+</button>
+
+                        <button data-val="negate" class="op">±</button>
+                        <button data-val="0">0</button>
+                        <button data-val=".">.</button>
+                        <button data-val="=" class="equals">=</button>
+                    </div>
+                </section>
+
+                <!-- ============ SCIENTIFIC MODE ============ -->
+                <section id="mode-scientific" class="calc-mode">
+                    <div class="display">
+                        <div class="expression" id="sci-expression"></div>
+                        <div class="result" id="sci-result">0</div>
+                    </div>
+                    <div class="angle-mode">
+                        <button class="angle-btn active" data-angle="deg">DEG</button>
+                        <button class="angle-btn" data-angle="rad">RAD</button>
+                        <button class="angle-btn" data-angle="grad">GRAD</button>
+                    </div>
+                    <div class="memory-bar">
+                        <button data-mem="mc">MC</button>
+                        <button data-mem="mr">MR</button>
+                        <button data-mem="m+">M+</button>
+                        <button data-mem="m-">M−</button>
+                        <button data-mem="ms">MS</button>
+                    </div>
+                    <div class="btn-grid scientific-grid">
+                        <button data-val="2nd" class="fn" id="btn-2nd">2nd</button>
+                        <button data-val="pi" class="fn">π</button>
+                        <button data-val="e" class="fn">e</button>
+                        <button data-val="clear" class="op">C</button>
+                        <button data-val="del" class="op">⌫</button>
+
+                        <button data-val="x^2" class="fn">x²</button>
+                        <button data-val="1/x" class="fn">1/x</button>
+                        <button data-val="|x|" class="fn">|x|</button>
+                        <button data-val="exp" class="fn">exp</button>
+                        <button data-val="mod" class="op">mod</button>
+
+                        <button data-val="sqrt" class="fn">√</button>
+                        <button data-val="(" class="fn">(</button>
+                        <button data-val=")" class="fn">)</button>
+                        <button data-val="n!" class="fn">n!</button>
+                        <button data-val="/" class="op">÷</button>
+
+                        <button data-val="x^y" class="fn">xʸ</button>
+                        <button data-val="7">7</button>
+                        <button data-val="8">8</button>
+                        <button data-val="9">9</button>
+                        <button data-val="*" class="op">×</button>
+
+                        <button data-val="10^x" class="fn">10ˣ</button>
+                        <button data-val="4">4</button>
+                        <button data-val="5">5</button>
+                        <button data-val="6">6</button>
+                        <button data-val="-" class="op">−</button>
+
+                        <button data-val="log" class="fn">log</button>
+                        <button data-val="1">1</button>
+                        <button data-val="2">2</button>
+                        <button data-val="3">3</button>
+                        <button data-val="+" class="op">+</button>
+
+                        <button data-val="ln" class="fn">ln</button>
+                        <button data-val="negate" class="op">±</button>
+                        <button data-val="0">0</button>
+                        <button data-val=".">.</button>
+                        <button data-val="=" class="equals">=</button>
+
+                        <!-- Trig row -->
+                        <button data-val="sin" class="fn trig">sin</button>
+                        <button data-val="cos" class="fn trig">cos</button>
+                        <button data-val="tan" class="fn trig">tan</button>
+                        <button data-val="sinh" class="fn trig">sinh</button>
+                        <button data-val="cosh" class="fn trig">cosh</button>
+                        <button data-val="tanh" class="fn trig">tanh</button>
+
+                        <button data-val="cbrt" class="fn">∛</button>
+                        <button data-val="x^3" class="fn">x³</button>
+                        <button data-val="log2" class="fn">log₂</button>
+                        <button data-val="e^x" class="fn">eˣ</button>
+                        <button data-val="floor" class="fn">⌊x⌋</button>
+                        <button data-val="ceil" class="fn">⌈x⌉</button>
+                    </div>
+                </section>
+
+                <!-- ============ PROGRAMMER MODE ============ -->
+                <section id="mode-programmer" class="calc-mode">
+                    <div class="display">
+                        <div class="expression" id="prog-expression"></div>
+                        <div class="result" id="prog-result">0</div>
+                    </div>
+                    <div class="base-display" id="base-display">
+                        <div class="base-row"><span class="base-label">HEX</span> <span id="hex-val">0</span></div>
+                        <div class="base-row"><span class="base-label">DEC</span> <span id="dec-val">0</span></div>
+                        <div class="base-row"><span class="base-label">OCT</span> <span id="oct-val">0</span></div>
+                        <div class="base-row"><span class="base-label">BIN</span> <span id="bin-val">0</span></div>
+                    </div>
+                    <div class="base-selector">
+                        <button class="base-btn" data-base="16">HEX</button>
+                        <button class="base-btn active" data-base="10">DEC</button>
+                        <button class="base-btn" data-base="8">OCT</button>
+                        <button class="base-btn" data-base="2">BIN</button>
+                    </div>
+                    <div class="bit-width-selector">
+                        <button class="bw-btn" data-bits="8">BYTE</button>
+                        <button class="bw-btn" data-bits="16">WORD</button>
+                        <button class="bw-btn active" data-bits="32">DWORD</button>
+                        <button class="bw-btn" data-bits="64">QWORD</button>
+                    </div>
+                    <div class="btn-grid programmer-grid">
+                        <button data-val="<<" class="op"><<</button>
+                        <button data-val=">>" class="op">>></button>
+                        <button data-val="AND" class="op">AND</button>
+                        <button data-val="clear" class="op">C</button>
+                        <button data-val="del" class="op">⌫</button>
+
+                        <button data-val="OR" class="op">OR</button>
+                        <button data-val="XOR" class="op">XOR</button>
+                        <button data-val="NOT" class="op">NOT</button>
+                        <button data-val="NAND" class="op">NAND</button>
+                        <button data-val="NOR" class="op">NOR</button>
+
+                        <button data-val="A" class="hex-btn">A</button>
+                        <button data-val="B" class="hex-btn">B</button>
+                        <button data-val="7">7</button>
+                        <button data-val="8">8</button>
+                        <button data-val="9">9</button>
+
+                        <button data-val="C" class="hex-btn">C</button>
+                        <button data-val="D" class="hex-btn">D</button>
+                        <button data-val="4">4</button>
+                        <button data-val="5">5</button>
+                        <button data-val="6">6</button>
+
+                        <button data-val="E" class="hex-btn">E</button>
+                        <button data-val="F" class="hex-btn">F</button>
+                        <button data-val="1">1</button>
+                        <button data-val="2">2</button>
+                        <button data-val="3">3</button>
+
+                        <button data-val="/" class="op">÷</button>
+                        <button data-val="*" class="op">×</button>
+                        <button data-val="-" class="op">−</button>
+                        <button data-val="0">0</button>
+                        <button data-val="+" class="op">+</button>
+
+                        <button data-val="%" class="op">%</button>
+                        <button data-val="(" class="op">(</button>
+                        <button data-val=")" class="op">)</button>
+                        <button data-val="." class="op">.</button>
+                        <button data-val="=" class="equals">=</button>
+                    </div>
+                </section>
+
+                <!-- ============ GRAPHING MODE ============ -->
+                <section id="mode-graphing" class="calc-mode">
+                    <div class="graph-controls">
+                        <input type="text" id="graph-fn-input" placeholder="Enter function: e.g. sin(x), x^2+2*x-1" value="sin(x)">
+                        <button id="graph-plot-btn">Plot</button>
+                        <button id="graph-clear-btn">Clear</button>
+                    </div>
+                    <div class="graph-settings">
+                        <label>x min: <input type="number" id="graph-xmin" value="-10"></label>
+                        <label>x max: <input type="number" id="graph-xmax" value="10"></label>
+                        <label>y min: <input type="number" id="graph-ymin" value="-10"></label>
+                        <label>y max: <input type="number" id="graph-ymax" value="10"></label>
+                    </div>
+                    <div class="graph-fn-list" id="graph-fn-list"></div>
+                    <canvas id="graph-canvas" width="600" height="400"></canvas>
+                    <div class="graph-info" id="graph-info">Hover over graph to see coordinates</div>
+                </section>
+
+                <!-- ============ CONVERTER MODE ============ -->
+                <section id="mode-converter" class="calc-mode">
+                    <div class="converter-container">
+                        <select id="converter-category">
+                            <option value="length">Length</option>
+                            <option value="weight">Weight / Mass</option>
+                            <option value="temperature">Temperature</option>
+                            <option value="area">Area</option>
+                            <option value="volume">Volume</option>
+                            <option value="speed">Speed</option>
+                            <option value="time">Time</option>
+                            <option value="data">Data Storage</option>
+                            <option value="pressure">Pressure</option>
+                            <option value="energy">Energy</option>
+                            <option value="power">Power</option>
+                            <option value="angle">Angle</option>
+                        </select>
+                        <div class="converter-row">
+                            <input type="number" id="converter-from-val" value="1" step="any">
+                            <select id="converter-from-unit"></select>
+                        </div>
+                        <div class="converter-swap">
+                            <button id="converter-swap-btn">⇅</button>
+                        </div>
+                        <div class="converter-row">
+                            <input type="number" id="converter-to-val" readonly>
+                            <select id="converter-to-unit"></select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ MATRIX MODE ============ -->
+                <section id="mode-matrix" class="calc-mode">
+                    <div class="matrix-container">
+                        <div class="matrix-size-controls">
+                            <label>Matrix A rows: <input type="number" id="mat-a-rows" value="2" min="1" max="6"></label>
+                            <label>cols: <input type="number" id="mat-a-cols" value="2" min="1" max="6"></label>
+                            <label>Matrix B rows: <input type="number" id="mat-b-rows" value="2" min="1" max="6"></label>
+                            <label>cols: <input type="number" id="mat-b-cols" value="2" min="1" max="6"></label>
+                            <button id="mat-generate">Generate</button>
+                        </div>
+                        <div class="matrix-inputs">
+                            <div>
+                                <h4>Matrix A</h4>
+                                <div id="matrix-a-grid" class="matrix-grid"></div>
+                            </div>
+                            <div>
+                                <h4>Matrix B</h4>
+                                <div id="matrix-b-grid" class="matrix-grid"></div>
+                            </div>
+                        </div>
+                        <div class="matrix-ops">
+                            <button data-matop="add">A + B</button>
+                            <button data-matop="sub">A − B</button>
+                            <button data-matop="mul">A × B</button>
+                            <button data-matop="det-a">det(A)</button>
+                            <button data-matop="det-b">det(B)</button>
+                            <button data-matop="trans-a">Aᵀ</button>
+                            <button data-matop="trans-b">Bᵀ</button>
+                            <button data-matop="inv-a">A⁻¹</button>
+                            <button data-matop="inv-b">B⁻¹</button>
+                            <button data-matop="scalar-a">k·A</button>
+                        </div>
+                        <div id="matrix-scalar-input" style="display:none;">
+                            <label>Scalar k: <input type="number" id="mat-scalar-k" value="2"></label>
+                        </div>
+                        <div class="matrix-result">
+                            <h4>Result</h4>
+                            <div id="matrix-result-grid" class="matrix-grid"></div>
+                            <div id="matrix-result-text"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ STATISTICS MODE ============ -->
+                <section id="mode-statistics" class="calc-mode">
+                    <div class="stats-container">
+                        <div class="stats-input-section">
+                            <label>Enter data (comma-separated):</label>
+                            <textarea id="stats-data" rows="3" placeholder="e.g. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10">1, 2, 3, 4, 5</textarea>
+                            <button id="stats-calc-btn">Calculate</button>
+                        </div>
+                        <div class="stats-results" id="stats-results">
+                            <table>
+                                <tr><td>Count (n)</td><td id="stat-n">—</td></tr>
+                                <tr><td>Sum (Σx)</td><td id="stat-sum">—</td></tr>
+                                <tr><td>Mean (x̄)</td><td id="stat-mean">—</td></tr>
+                                <tr><td>Median</td><td id="stat-median">—</td></tr>
+                                <tr><td>Mode</td><td id="stat-mode">—</td></tr>
+                                <tr><td>Range</td><td id="stat-range">—</td></tr>
+                                <tr><td>Min</td><td id="stat-min">—</td></tr>
+                                <tr><td>Max</td><td id="stat-max">—</td></tr>
+                                <tr><td>Variance (σ²)</td><td id="stat-variance">—</td></tr>
+                                <tr><td>Std Dev (σ)</td><td id="stat-stddev">—</td></tr>
+                                <tr><td>Sample Variance (s²)</td><td id="stat-svariance">—</td></tr>
+                                <tr><td>Sample Std Dev (s)</td><td id="stat-sstddev">—</td></tr>
+                                <tr><td>Geometric Mean</td><td id="stat-gmean">—</td></tr>
+                                <tr><td>Harmonic Mean</td><td id="stat-hmean">—</td></tr>
+                                <tr><td>Skewness</td><td id="stat-skew">—</td></tr>
+                                <tr><td>Kurtosis</td><td id="stat-kurt">—</td></tr>
+                                <tr><td>Q1 (25th)</td><td id="stat-q1">—</td></tr>
+                                <tr><td>Q3 (75th)</td><td id="stat-q3">—</td></tr>
+                                <tr><td>IQR</td><td id="stat-iqr">—</td></tr>
+                                <tr><td>Sum of Squares</td><td id="stat-sumsq">—</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ DATE CALCULATOR MODE ============ -->
+                <section id="mode-date" class="calc-mode">
+                    <div class="date-container">
+                        <h3>Date Difference</h3>
+                        <div class="date-row">
+                            <label>From: <input type="date" id="date-from"></label>
+                            <label>To: <input type="date" id="date-to"></label>
+                            <button id="date-diff-btn">Calculate</button>
+                        </div>
+                        <div id="date-diff-result" class="date-result"></div>
+
+                        <h3>Add / Subtract from Date</h3>
+                        <div class="date-row">
+                            <label>Start Date: <input type="date" id="date-start"></label>
+                            <select id="date-add-sub">
+                                <option value="add">Add</option>
+                                <option value="sub">Subtract</option>
+                            </select>
+                            <input type="number" id="date-amount" value="7" min="0">
+                            <select id="date-unit">
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
+                            <button id="date-add-btn">Calculate</button>
+                        </div>
+                        <div id="date-add-result" class="date-result"></div>
+
+                        <h3>Day of Year & Week Number</h3>
+                        <div class="date-row">
+                            <label>Date: <input type="date" id="date-info-input"></label>
+                            <button id="date-info-btn">Get Info</button>
+                        </div>
+                        <div id="date-info-result" class="date-result"></div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Memory Panel -->
+            <aside id="memory-panel" class="panel">
+                <div class="panel-header">
+                    <h3>Memory</h3>
+                    <button id="clear-memory" title="Clear Memory">✕</button>
+                </div>
+                <ul id="memory-list"></ul>
+            </aside>
         </div>
-        <button class = "button" data-value="clear">CE</button>
-        <button class = "button" data-value="del"> DEL</button>
-        <button class = "button" data-value="/100">%</button>
-        <button class = "button" data-value="/">÷</button>
 
-        <button class = "button" data-value="7">7</button>
-        <button class = "button" data-value="8">8</button>
-        <button class = "button" data-value="9">9</button>
-        <button class = "button" data-value="*">*</button>
+        <!-- Keyboard shortcuts modal -->
+        <div id="shortcuts-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" id="close-shortcuts">✕</button>
+                <h2>Keyboard Shortcuts</h2>
+                <table class="shortcuts-table">
+                    <tr><td>0–9, .</td><td>Enter digits</td></tr>
+                    <tr><td>+ − * /</td><td>Operators</td></tr>
+                    <tr><td>Enter / =</td><td>Evaluate</td></tr>
+                    <tr><td>Backspace</td><td>Delete last</td></tr>
+                    <tr><td>Escape</td><td>Clear</td></tr>
+                    <tr><td>( )</td><td>Parentheses</td></tr>
+                    <tr><td>p</td><td>π</td></tr>
+                    <tr><td>e</td><td>Euler's number</td></tr>
+                    <tr><td>!</td><td>Factorial</td></tr>
+                    <tr><td>s</td><td>sin</td></tr>
+                    <tr><td>c</td><td>cos</td></tr>
+                    <tr><td>t</td><td>tan</td></tr>
+                    <tr><td>l</td><td>log</td></tr>
+                    <tr><td>n</td><td>ln</td></tr>
+                    <tr><td>r</td><td>√</td></tr>
+                    <tr><td>^</td><td>Power</td></tr>
+                    <tr><td>Ctrl+Z</td><td>Undo</td></tr>
+                    <tr><td>?</td><td>Show shortcuts</td></tr>
+                </table>
+            </div>
+        </div>
 
-        <button class = "button" data-value="4">4</button>
-        <button class = "button" data-value="5">5</button>
-        <button class = "button" data-value="6">6</button>
-        <button class = "button" data-value="+">+</button>
-
-        <button class = "button" data-value="1">1</button>
-        <button class = "button" data-value="2">2</button>
-        <button class = "button" data-value="3">3</button>
-        <button class = "button" data-value="-">-</button>
-
-        <button class = "button" data-value="%">Re</button>
-        <button class = "button" data-value="0">0</button>
-        <button class = "button" data-value=".">.</button>        
-        <button class = "button" data-value="=">=</button>
-        
-        <script src="./index.js"></script>
+        <button id="shortcuts-btn" title="Keyboard Shortcuts (?)">⌨</button>
     </div>
-</body>
 
+    <script src="./index.js"></script>
+</body>
 </html>
