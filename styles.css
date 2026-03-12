@@ -1,179 +1,443 @@
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
 body {
-  line-height: 1;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-/* Above CSS Reset  */
-
-.outer{
-    display: grid;
-    justify-content: center;
-    align-content: center;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
     min-height: 100vh;
-    grid-template-columns: repeat(4,100px);
-    grid-template-rows: minmax(120px,auto) repeat(5,100px);
-    
-}
-
-.outer > button{
-    cursor: pointer;
-    font-size: 2rem;
-    border: 1px solid white;
-    outline: none;
-}
-
-.outer > button:hover{
-    cursor: pointer;
-    font-size: 2rem;
-    border: 1px solid white;
-    outline: none;
-    background-color: aliceblue;
-}
-
-.output {
-    grid-column: 1 / -1;
-    background-color: rgba(0, 0, 0, .75);
     display: flex;
-    align-items: flex-end;
-    justify-content: space-around;
     flex-direction: column;
-    padding: 10px;
-    word-wrap: break-word;
+    align-items: center;
+}
+
+/* ===== MODE TABS ===== */
+#mode-tabs {
+    display: flex;
+    gap: 2px;
+    margin: 18px 0 0 0;
+    background: #16213e;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.mode-tab {
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    background: #16213e;
+    color: #8899aa;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .5px;
+}
+.mode-tab:hover { background: #1a2744; color: #cde; }
+.mode-tab.active { background: #0f3460; color: #e94560; }
+
+/* ===== CALCULATOR CONTAINERS ===== */
+.calc-container { display: none; }
+.calc-container.active { display: block; }
+
+/* ======================================================
+   FINANCIAL CALCULATOR  (TI BA II Plus)
+   ====================================================== */
+#financial-calc {
+    background: linear-gradient(145deg, #2c2c3a, #1e1e2a);
+    border-radius: 0 0 16px 16px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    width: 540px;
+}
+
+.fin-display {
+    background: #c5cfa0;
+    color: #222;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 14px;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-family: 'Courier New', monospace;
+    position: relative;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,.2);
+}
+.fin-indicator {
+    font-size: .7rem;
+    color: #555;
+    position: absolute;
+    top: 6px; left: 12px;
+}
+.fin-main-display {
+    font-size: 1.9rem;
+    text-align: right;
+    font-weight: bold;
+    letter-spacing: 1px;
+    min-height: 30px;
+    word-break: break-all;
+}
+.fin-label {
+    font-size: .75rem;
+    text-align: right;
+    color: #444;
+    min-height: 16px;
+}
+
+.fin-keys {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+}
+
+.fin-btn {
+    position: relative;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 4px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #3a3a4e;
+    color: #eee;
+    transition: all .15s;
+    text-align: center;
+    line-height: 1.2;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.fin-btn:hover { background: #4e4e66; transform: translateY(-1px); }
+.fin-btn:active { background: #555570; transform: translateY(0); }
+
+.fin-btn .second-label {
+    position: absolute;
+    top: 2px;
+    font-size: .55rem;
+    color: #e9a560;
+    font-weight: normal;
+}
+
+.fin-btn.second-fn { background: #e98530; color: #fff; }
+.fin-btn.second-fn:hover { background: #f09540; }
+.fin-btn.second-fn.active-2nd { background: #ffaa00; box-shadow: 0 0 8px #ffaa0066; }
+
+.fin-btn.num { background: #2a2a3a; font-size: 1.1rem; }
+.fin-btn.num:hover { background: #3a3a4e; }
+
+.fin-btn.op { background: #444460; }
+.fin-btn.op:hover { background: #555580; }
+
+.fin-btn.enter-btn { background: #2980b9; color: #fff; }
+.fin-btn.enter-btn:hover { background: #3498db; }
+
+.fin-btn.compute-btn { background: #27ae60; color: #fff; }
+.fin-btn.compute-btn:hover { background: #2ecc71; }
+
+.fin-btn.equals-btn { background: #e74c3c; color: #fff; }
+.fin-btn.equals-btn:hover { background: #ef5350; }
+
+/* ======================================================
+   SCIENTIFIC CALCULATOR
+   ====================================================== */
+#scientific-calc {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border-radius: 0 0 16px 16px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    width: 460px;
+}
+
+.sci-display {
+    background: #0a1628;
+    border: 2px solid #0f3460;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+}
+.sci-mode-indicators {
+    display: flex;
+    gap: 12px;
+    font-size: .65rem;
+    color: #4a90d9;
+    margin-bottom: 4px;
+}
+.sci-expression {
+    font-size: .85rem;
+    color: #8899aa;
+    text-align: right;
+    min-height: 18px;
+    word-break: break-all;
+    margin-bottom: 2px;
+}
+.sci-result {
+    font-size: 2rem;
+    text-align: right;
+    color: #e0e8f0;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    min-height: 32px;
     word-break: break-all;
 }
 
-.output .previous-operand {
-    color: rgba(255, 255, 255, .75);
-    font-size: 1.5rem;
-  }
-  
-  .output .current-operand {
-    color: white;
-    font-size: 2.5rem;
-  }
+.sci-keys {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+}
+
+.sci-btn {
+    position: relative;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 2px 14px;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #16213e;
+    color: #ccd;
+    transition: all .15s;
+    text-align: center;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.sci-btn:hover { background: #1a2c50; transform: translateY(-1px); }
+.sci-btn:active { background: #223366; }
+
+.sci-btn .shift-label {
+    position: absolute;
+    top: 2px;
+    font-size: .55rem;
+    color: #e9a560;
+}
+
+.sci-btn.shift-btn { background: #e98530; color: #fff; font-weight: 700; }
+.sci-btn.shift-btn:hover { background: #f09540; }
+.sci-btn.shift-btn.active-shift { background: #ffaa00; box-shadow: 0 0 8px #ffaa0066; }
+
+.sci-btn.num-btn { background: #0f1a30; font-size: 1.15rem; color: #fff; }
+.sci-btn.num-btn:hover { background: #162040; }
+
+.sci-btn.op-btn { background: #0f3460; color: #7ec8e3; font-size: 1.1rem; }
+.sci-btn.op-btn:hover { background: #184080; }
+
+.sci-btn.clear-btn { background: #6b2030; color: #ff8888; }
+.sci-btn.clear-btn:hover { background: #8b3040; }
+
+.sci-btn.equals-btn { background: #e94560; color: #fff; font-size: 1.2rem; font-weight: 700; }
+.sci-btn.equals-btn:hover { background: #ff5570; }
+
+.sci-btn.mem-btn { background: #1a2040; color: #88aacc; font-size: .75rem; }
+.sci-btn.mem-btn:hover { background: #223060; }
+
+.sci-btn.mode-btn { background: #1a2e44; }
+
+/* ======================================================
+   GRAPHING CALCULATOR
+   ====================================================== */
+#graphing-calc {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border-radius: 0 0 16px 16px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    width: 1080px;
+    max-width: 98vw;
+}
+
+.graph-panel {
+    display: flex;
+    gap: 12px;
+}
+
+.graph-func-panel {
+    width: 340px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.graph-func-header, .graph-window-header, .graph-table-header span {
+    font-weight: 700;
+    font-size: .85rem;
+    color: #e94560;
+    margin-bottom: 4px;
+}
+.graph-func-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.graph-func-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+.graph-func-toggle { width: 16px; height: 16px; cursor: pointer; }
+.graph-func-color { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.graph-func-row label { font-size: .8rem; color: #aab; min-width: 28px; }
+.graph-func-input {
+    flex: 1;
+    background: #0a1628;
+    border: 1px solid #0f3460;
+    border-radius: 4px;
+    padding: 5px 8px;
+    color: #e0e8f0;
+    font-size: .85rem;
+    font-family: 'Courier New', monospace;
+}
+.graph-func-input:focus { outline: none; border-color: #e94560; }
+
+.graph-window-settings {
+    background: #0d1a30;
+    border-radius: 6px;
+    padding: 8px;
+}
+.graph-window-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 4px;
+}
+.graph-window-row label { font-size: .75rem; color: #889; min-width: 32px; }
+.graph-window-row input {
+    width: 60px;
+    background: #0a1225;
+    border: 1px solid #1a3050;
+    border-radius: 4px;
+    padding: 4px 6px;
+    color: #cde;
+    font-size: .8rem;
+}
+.graph-window-row input:focus { outline: none; border-color: #e94560; }
+
+.graph-toolbar, .graph-analysis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.graph-toolbar-btn {
+    background: #16213e;
+    color: #8cb4d8;
+    border: 1px solid #1a3050;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: .75rem;
+    cursor: pointer;
+    transition: all .15s;
+}
+.graph-toolbar-btn:hover { background: #1a2c50; border-color: #3070a0; }
+.graph-toolbar-btn.primary-btn { background: #0f3460; color: #7ec8e3; border-color: #2060a0; font-weight: 700; }
+.graph-toolbar-btn.primary-btn:hover { background: #184080; }
+.graph-toolbar-btn.active { background: #e94560; color: #fff; border-color: #e94560; }
+
+.graph-info {
+    background: #0a1225;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: .8rem;
+    color: #abc;
+    min-height: 24px;
+    font-family: 'Courier New', monospace;
+}
+
+.graph-canvas-container {
+    position: relative;
+    flex: 1;
+}
+#graph-canvas {
+    background: #0a0a18;
+    border-radius: 8px;
+    border: 2px solid #0f3460;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+.graph-coords {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: .75rem;
+    color: #556;
+    font-family: 'Courier New', monospace;
+}
+
+/* Table */
+.graph-table-container {
+    background: #0d1a30;
+    border-radius: 6px;
+    padding: 8px;
+    max-height: 240px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.graph-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+.graph-table-header input {
+    width: 50px;
+    background: #0a1225;
+    border: 1px solid #1a3050;
+    border-radius: 4px;
+    padding: 3px 5px;
+    color: #cde;
+    font-size: .75rem;
+}
+.graph-table-header label { font-size: .7rem; color: #889; }
+.graph-table-scroll { overflow-y: auto; flex: 1; }
+#graph-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .75rem;
+}
+#graph-table th {
+    background: #16213e;
+    color: #8cb4d8;
+    padding: 4px 6px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+}
+#graph-table td {
+    padding: 3px 6px;
+    text-align: center;
+    color: #bcd;
+    border-bottom: 1px solid #1a2540;
+}
+#graph-table tr:hover td { background: #162040; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+    #graphing-calc { width: 98vw; }
+    .graph-panel { flex-direction: column; }
+    .graph-func-panel { width: 100%; }
+}
+@media (max-width: 560px) {
+    #financial-calc { width: 98vw; }
+    .fin-btn { font-size: .68rem; min-height: 40px; padding: 6px 2px 10px; }
+}
+@media (max-width: 480px) {
+    #scientific-calc { width: 98vw; }
+    .sci-btn { font-size: .72rem; min-height: 38px; }
+}
