@@ -161,7 +161,8 @@ impl SciCalc {
         }
         self.op = Some(new_op);
         self.history = format!("{} {}", Self::fmt(self.prev.unwrap()), new_op.sym());
-        self.just_eq = false;
+        self.current = Self::fmt(self.prev.unwrap());
+        self.just_eq = true;
     }
 
     fn equals(&mut self) {
@@ -220,9 +221,13 @@ impl SciCalc {
                 if let (Some(p),Some(op))=(self.prev,self.op){self.history=format!("{} {} {}",Self::fmt(p),op.sym(),self.current);}
             }
             "%" => {
-                let v = self.cur_f()/100.0; self.current=Self::fmt(v);
+                let raw = self.cur_f();
+                let v = if let (Some(p), Some(op)) = (self.prev, self.op) {
+                    if matches!(op, Op::Add | Op::Sub) { p * raw / 100.0 } else { raw / 100.0 }
+                } else { raw / 100.0 };
+                self.current = Self::fmt(v);
                 if let (Some(p),Some(op))=(self.prev,self.op){self.history=format!("{} {} {}",Self::fmt(p),op.sym(),self.current);}
-                else{self.history=format!("{}% =",Self::fmt(v*100.0));}
+                else{self.history=format!("{}% = {}",Self::fmt(raw),self.current);}
             }
             // Trig
             "sin"|"cos"|"tan" => {
@@ -340,13 +345,14 @@ impl FinCalc {
                 if self.just_eq{self.current=k.to_string();self.history=String::new();self.just_eq=false;}
                 else if self.current=="0"{self.current=k.to_string();}
                 else{self.current.push_str(k);}
+                if let Some(op)=self.pending_op{self.history=format!("{} {} {}",fmt(self.prev),op.sym(),self.current);}
             }
             "." => {if !self.current.contains('.'){ self.current.push('.'); }}
             "+"|"−"|"×"|"÷" => {
                 let op=match k{"+"=>Op::Add,"−"=>Op::Sub,"×"=>Op::Mul,_=>Op::Div};
                 let c=self.cur_f();
                 if let Some(po)=self.pending_op{if !self.just_eq{let r=po.apply(self.prev,c);self.prev=if r.is_finite(){r}else{c};}else{self.prev=c;}}else{self.prev=c;}
-                self.pending_op=Some(op);self.history=format!("{} {}",fmt(self.prev),op.sym());self.just_eq=false;
+                self.pending_op=Some(op);self.history=format!("{} {}",fmt(self.prev),op.sym());self.just_eq=true;
             }
             "=" => {
                 if let Some(op)=self.pending_op{let b=self.cur_f();let r=op.apply(self.prev,b);self.history=format!("{} {} {} =",fmt(self.prev),op.sym(),fmt(b));self.current=fmt(r);self.pending_op=None;self.just_eq=true;}

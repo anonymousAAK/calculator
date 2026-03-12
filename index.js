@@ -187,12 +187,13 @@ const Sci = (() => {
             render(); return;
         }
 
-        // ── Power (yˣ shortcut row button) ──
-        if (k === 'pow') {
+        // ── Power (yˣ shortcut row button or function-row yx) ──
+        if (k === 'pow' || k === 'yx') {
             twoArgFn = 'pow'; twoArgA = curNum();
             history = fmtNum(twoArgA) + ' ^';
             pendingOp = 'pow'; pendingOpSym = '^'; prevVal = twoArgA;
             justCalc = false;
+            waitingForOperand = true;
             render(); return;
         }
 
@@ -209,9 +210,15 @@ const Sci = (() => {
 
         // ── AC / C ──
         if (k === 'ac') {
-            current = '0'; history = ''; prevVal = null; pendingOp = null;
-            pendingOpSym = ''; justCalc = false; waitingForOperand = false; openParens = 0;
-            twoArgFn = null; twoArgA = null;
+            if (current !== '0' || history) {
+                // "C" behavior: clear current entry only, preserve pending operation
+                current = '0'; history = ''; justCalc = false; waitingForOperand = false;
+            } else {
+                // "AC" behavior: full reset
+                current = '0'; history = ''; prevVal = null; pendingOp = null;
+                pendingOpSym = ''; justCalc = false; waitingForOperand = false; openParens = 0;
+                twoArgFn = null; twoArgA = null;
+            }
             render(); return;
         }
 
@@ -232,12 +239,18 @@ const Sci = (() => {
             render(); return;
         }
 
-        // ── % ──
+        // ── % (Apple-style: for +/- uses prevVal*v/100, for */÷ uses v/100) ──
         if (k === 'pct') {
-            const v = curNum() / 100;
+            const raw = curNum();
+            let v;
+            if (pendingOp && (pendingOp === 'add' || pendingOp === 'sub')) {
+                v = prevVal * raw / 100;
+            } else {
+                v = raw / 100;
+            }
             current = fmtNum(v);
             if (pendingOp) history = fmtNum(prevVal) + ' ' + pendingOpSym + ' ' + current;
-            else history = current + '%';
+            else history = fmtNum(raw) + '% = ' + current;
             render(); return;
         }
 
@@ -365,6 +378,9 @@ const Sci = (() => {
             } else if (twoArgFn === 'xrty') {
                 r = Math.pow(a, 1/b);
                 lbl = fmtNum(b) + '√' + fmtNum(a) + ' =';
+            } else if (twoArgFn === 'pow') {
+                r = Math.pow(a, b);
+                lbl = fmtNum(a) + '^' + fmtNum(b) + ' =';
             }
             setResult(r, lbl);
             return;
@@ -376,6 +392,7 @@ const Sci = (() => {
             if (twoArgFn === 'npr') r = factorial(a) / factorial(a - b);
             else if (twoArgFn === 'ncr') r = factorial(a) / (factorial(b) * factorial(a - b));
             else if (twoArgFn === 'xrty') r = Math.pow(a, 1/b);
+            else if (twoArgFn === 'pow') r = Math.pow(a, b);
             twoArgFn = null; twoArgA = null;
             current = fmtNum(r); justCalc = true; prevVal = null; pendingOp = null;
             press(k); return;
@@ -488,12 +505,13 @@ const Fin = (() => {
         const i = iy / 100 / (PY || 1);
         const typ = bgn ? 1 : 0;
         switch (unknown) {
-            case 'N':
+            case 'N': {
                 if (i === 0) return pmt ? -(pv+fv)/pmt : NaN;
                 const num = pmt*(1+i*typ) - fv*i;
                 const den = pmt*(1+i*typ) + pv*i;
                 if (den===0||num/den<=0) return NaN;
                 return Math.log(num/den) / Math.log(1+i);
+            }
             case 'IY': {
                 let r = 0.1 / (PY||1);
                 for (let it=0;it<200;it++) {
@@ -508,18 +526,21 @@ const Fin = (() => {
                 }
                 return r * (PY||1) * 100;
             }
-            case 'PV':
+            case 'PV': {
                 if (i===0) return -(fv+pmt*n);
                 const rn=Math.pow(1+i,n);
                 return -(fv/rn + pmt*(1+i*typ)*(1-1/rn)/i);
-            case 'PMT':
+            }
+            case 'PMT': {
                 if (i===0) return -(pv+fv)/n;
                 const rn2=Math.pow(1+i,n);
                 return -(pv*rn2+fv)*i/((1+i*typ)*(rn2-1));
-            case 'FV':
+            }
+            case 'FV': {
                 if (i===0) return -(pv+pmt*n);
                 const rn3=Math.pow(1+i,n);
                 return -(pv*rn3+pmt*(1+i*typ)*(rn3-1)/i);
+            }
         }
     }
 
@@ -571,7 +592,7 @@ const Fin = (() => {
             } else { prevVal=cur; }
             pendingOp=op; pendingOpSym=sym;
             history=fmtNum(prevVal)+' '+sym;
-            justCalc=false; render(); return;
+            justCalc=true; render(); return;
         }
         if (k==='feq') {
             if (pendingOp){
@@ -630,7 +651,7 @@ const Fin = (() => {
         if (k==='recip'){ setDisp(1/curNum(),'1/x ='); return; }
         if (k==='yx') {
             prevVal=curNum(); pendingOp='pow'; pendingOpSym='^';
-            history=fmtNum(prevVal)+' ^'; justCalc=false; render(); return;
+            history=fmtNum(prevVal)+' ^'; justCalc=true; render(); return;
         }
         // STO/RCL
         if (k==='STO') { mem[0]=curNum(); history='STO → M0'; render(); return; }
