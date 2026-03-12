@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Advanced Calculator</title>
+    <title>Ultimate Calculator — BA II Plus + Scientific + Graphing</title>
     <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
     <div id="app">
-        <!-- Theme & Mode Controls -->
         <header id="header">
-            <h1>Advanced Calculator</h1>
+            <h1>Ultimate Calculator</h1>
             <div class="header-controls">
                 <button id="theme-toggle" title="Toggle Theme">🌙</button>
                 <div class="mode-tabs">
@@ -18,16 +17,17 @@
                     <button class="mode-tab" data-mode="scientific">Scientific</button>
                     <button class="mode-tab" data-mode="programmer">Programmer</button>
                     <button class="mode-tab" data-mode="graphing">Graphing</button>
+                    <button class="mode-tab" data-mode="financial">BA II Plus</button>
                     <button class="mode-tab" data-mode="converter">Converter</button>
                     <button class="mode-tab" data-mode="matrix">Matrix</button>
                     <button class="mode-tab" data-mode="statistics">Statistics</button>
+                    <button class="mode-tab" data-mode="equation">Equations</button>
                     <button class="mode-tab" data-mode="date">Date</button>
                 </div>
             </div>
         </header>
 
         <div class="main-layout">
-            <!-- History Panel -->
             <aside id="history-panel" class="panel">
                 <div class="panel-header">
                     <h3>History</h3>
@@ -36,7 +36,6 @@
                 <ul id="history-list"></ul>
             </aside>
 
-            <!-- Calculator Body -->
             <main id="calc-body">
 
                 <!-- ============ STANDARD MODE ============ -->
@@ -57,27 +56,22 @@
                         <button data-val="ce" class="op">CE</button>
                         <button data-val="clear" class="op">C</button>
                         <button data-val="del" class="op">⌫</button>
-
                         <button data-val="1/x" class="op">1/x</button>
                         <button data-val="x^2" class="op">x²</button>
                         <button data-val="sqrt" class="op">√x</button>
                         <button data-val="/" class="op">÷</button>
-
                         <button data-val="7">7</button>
                         <button data-val="8">8</button>
                         <button data-val="9">9</button>
                         <button data-val="*" class="op">×</button>
-
                         <button data-val="4">4</button>
                         <button data-val="5">5</button>
                         <button data-val="6">6</button>
                         <button data-val="-" class="op">−</button>
-
                         <button data-val="1">1</button>
                         <button data-val="2">2</button>
                         <button data-val="3">3</button>
                         <button data-val="+" class="op">+</button>
-
                         <button data-val="negate" class="op">±</button>
                         <button data-val="0">0</button>
                         <button data-val=".">.</button>
@@ -95,6 +89,7 @@
                         <button class="angle-btn active" data-angle="deg">DEG</button>
                         <button class="angle-btn" data-angle="rad">RAD</button>
                         <button class="angle-btn" data-angle="grad">GRAD</button>
+                        <span class="sci-indicator" id="sci-indicator"></span>
                     </div>
                     <div class="memory-bar">
                         <button data-mem="mc">MC</button>
@@ -152,14 +147,31 @@
                         <button data-val="tan" class="fn trig">tan</button>
                         <button data-val="sinh" class="fn trig">sinh</button>
                         <button data-val="cosh" class="fn trig">cosh</button>
-                        <button data-val="tanh" class="fn trig">tanh</button>
 
+                        <button data-val="tanh" class="fn trig">tanh</button>
                         <button data-val="cbrt" class="fn">∛</button>
                         <button data-val="x^3" class="fn">x³</button>
                         <button data-val="log2" class="fn">log₂</button>
                         <button data-val="e^x" class="fn">eˣ</button>
+
+                        <!-- Extra scientific -->
                         <button data-val="floor" class="fn">⌊x⌋</button>
                         <button data-val="ceil" class="fn">⌈x⌉</button>
+                        <button data-val="round" class="fn">round</button>
+                        <button data-val="nPr" class="fn">nPr</button>
+                        <button data-val="nCr" class="fn">nCr</button>
+
+                        <button data-val="rand" class="fn">rand</button>
+                        <button data-val="dms" class="fn">→DMS</button>
+                        <button data-val="deg-conv" class="fn">→DEG</button>
+                        <button data-val="to-frac" class="fn">→Frac</button>
+                        <button data-val="gamma" class="fn">Γ(x)</button>
+
+                        <button data-val="sec" class="fn">sec</button>
+                        <button data-val="csc" class="fn">csc</button>
+                        <button data-val="cot" class="fn">cot</button>
+                        <button data-val="sign" class="fn">sgn</button>
+                        <button data-val="eex" class="fn">EEX</button>
                     </div>
                 </section>
 
@@ -170,10 +182,10 @@
                         <div class="result" id="prog-result">0</div>
                     </div>
                     <div class="base-display" id="base-display">
-                        <div class="base-row"><span class="base-label">HEX</span> <span id="hex-val">0</span></div>
-                        <div class="base-row"><span class="base-label">DEC</span> <span id="dec-val">0</span></div>
-                        <div class="base-row"><span class="base-label">OCT</span> <span id="oct-val">0</span></div>
-                        <div class="base-row"><span class="base-label">BIN</span> <span id="bin-val">0</span></div>
+                        <div class="base-row"><span class="base-label">HEX</span><span id="hex-val">0</span></div>
+                        <div class="base-row"><span class="base-label">DEC</span><span id="dec-val">0</span></div>
+                        <div class="base-row"><span class="base-label">OCT</span><span id="oct-val">0</span></div>
+                        <div class="base-row"><span class="base-label">BIN</span><span id="bin-val">0</span></div>
                     </div>
                     <div class="base-selector">
                         <button class="base-btn" data-base="16">HEX</button>
@@ -188,42 +200,36 @@
                         <button class="bw-btn" data-bits="64">QWORD</button>
                     </div>
                     <div class="btn-grid programmer-grid">
-                        <button data-val="<<" class="op"><<</button>
-                        <button data-val=">>" class="op">>></button>
+                        <button data-val="<<" class="op">&lt;&lt;</button>
+                        <button data-val=">>" class="op">&gt;&gt;</button>
                         <button data-val="AND" class="op">AND</button>
                         <button data-val="clear" class="op">C</button>
                         <button data-val="del" class="op">⌫</button>
-
                         <button data-val="OR" class="op">OR</button>
                         <button data-val="XOR" class="op">XOR</button>
                         <button data-val="NOT" class="op">NOT</button>
                         <button data-val="NAND" class="op">NAND</button>
                         <button data-val="NOR" class="op">NOR</button>
-
                         <button data-val="A" class="hex-btn">A</button>
                         <button data-val="B" class="hex-btn">B</button>
                         <button data-val="7">7</button>
                         <button data-val="8">8</button>
                         <button data-val="9">9</button>
-
                         <button data-val="C" class="hex-btn">C</button>
                         <button data-val="D" class="hex-btn">D</button>
                         <button data-val="4">4</button>
                         <button data-val="5">5</button>
                         <button data-val="6">6</button>
-
                         <button data-val="E" class="hex-btn">E</button>
                         <button data-val="F" class="hex-btn">F</button>
                         <button data-val="1">1</button>
                         <button data-val="2">2</button>
                         <button data-val="3">3</button>
-
                         <button data-val="/" class="op">÷</button>
                         <button data-val="*" class="op">×</button>
                         <button data-val="-" class="op">−</button>
                         <button data-val="0">0</button>
                         <button data-val="+" class="op">+</button>
-
                         <button data-val="%" class="op">%</button>
                         <button data-val="(" class="op">(</button>
                         <button data-val=")" class="op">)</button>
@@ -235,19 +241,430 @@
                 <!-- ============ GRAPHING MODE ============ -->
                 <section id="mode-graphing" class="calc-mode">
                     <div class="graph-controls">
-                        <input type="text" id="graph-fn-input" placeholder="Enter function: e.g. sin(x), x^2+2*x-1" value="sin(x)">
+                        <select id="graph-type">
+                            <option value="cartesian">y = f(x)</option>
+                            <option value="polar">r = f(θ)</option>
+                            <option value="parametric">Parametric</option>
+                        </select>
+                        <input type="text" id="graph-fn-input" placeholder="e.g. sin(x), x^2+2*x-1" value="sin(x)">
                         <button id="graph-plot-btn">Plot</button>
                         <button id="graph-clear-btn">Clear</button>
                     </div>
+                    <div id="graph-param-inputs" class="graph-param-inputs" style="display:none;">
+                        <input type="text" id="graph-xt-input" placeholder="x(t) = cos(t)">
+                        <input type="text" id="graph-yt-input" placeholder="y(t) = sin(t)">
+                        <label>t: <input type="number" id="graph-tmin" value="0" style="width:50px"> to <input type="number" id="graph-tmax" value="6.28" style="width:50px"></label>
+                    </div>
                     <div class="graph-settings">
-                        <label>x min: <input type="number" id="graph-xmin" value="-10"></label>
-                        <label>x max: <input type="number" id="graph-xmax" value="10"></label>
-                        <label>y min: <input type="number" id="graph-ymin" value="-10"></label>
-                        <label>y max: <input type="number" id="graph-ymax" value="10"></label>
+                        <label>x min:<input type="number" id="graph-xmin" value="-10"></label>
+                        <label>x max:<input type="number" id="graph-xmax" value="10"></label>
+                        <label>y min:<input type="number" id="graph-ymin" value="-10"></label>
+                        <label>y max:<input type="number" id="graph-ymax" value="10"></label>
+                        <button id="graph-zoom-in" class="graph-zoom-btn">Zoom +</button>
+                        <button id="graph-zoom-out" class="graph-zoom-btn">Zoom −</button>
+                        <button id="graph-reset-view" class="graph-zoom-btn">Reset</button>
+                    </div>
+                    <div class="graph-tools">
+                        <label><input type="checkbox" id="graph-trace-mode"> Trace</label>
+                        <label><input type="checkbox" id="graph-deriv-mode"> Show Derivative</label>
+                        <label><input type="checkbox" id="graph-grid-toggle" checked> Grid</label>
+                        <button id="graph-table-btn">Table</button>
+                        <button id="graph-intersect-btn">Intersections</button>
+                        <button id="graph-zeros-btn">Zeros</button>
                     </div>
                     <div class="graph-fn-list" id="graph-fn-list"></div>
                     <canvas id="graph-canvas" width="600" height="400"></canvas>
                     <div class="graph-info" id="graph-info">Hover over graph to see coordinates</div>
+                    <div id="graph-table-container" class="graph-table-container" style="display:none;">
+                        <div class="graph-table-header">
+                            <h4>Table of Values</h4>
+                            <label>Step:<input type="number" id="graph-table-step" value="1" step="0.5" style="width:60px"></label>
+                            <button id="graph-table-close">✕</button>
+                        </div>
+                        <div class="graph-table-scroll">
+                            <table id="graph-table"><thead><tr><th>x</th><th>y</th></tr></thead><tbody></tbody></table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ BA II PLUS FINANCIAL MODE ============ -->
+                <section id="mode-financial" class="calc-mode">
+                    <div class="fin-container">
+                        <div class="fin-worksheet-tabs">
+                            <button class="fin-tab active" data-fin="tvm">TVM</button>
+                            <button class="fin-tab" data-fin="amort">Amort</button>
+                            <button class="fin-tab" data-fin="cashflow">Cash Flow</button>
+                            <button class="fin-tab" data-fin="bond">Bond</button>
+                            <button class="fin-tab" data-fin="depreciation">Deprec</button>
+                            <button class="fin-tab" data-fin="iconv">I Conv</button>
+                            <button class="fin-tab" data-fin="margin">Margin</button>
+                            <button class="fin-tab" data-fin="breakeven">Breakeven</button>
+                            <button class="fin-tab" data-fin="pctchg">%Chg</button>
+                        </div>
+
+                        <!-- TVM -->
+                        <div class="fin-sheet active" id="fin-tvm">
+                            <h3>Time Value of Money</h3>
+                            <p class="fin-hint">Enter any 4 values and compute the 5th. Payments at <select id="tvm-pmt-timing" class="inline-select"><option value="end">END</option><option value="begin">BGN</option></select></p>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>N <span class="fin-sub">periods</span></label>
+                                    <input type="number" id="tvm-n" step="any">
+                                    <button class="fin-cpt" data-compute="n">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>I/Y <span class="fin-sub">% per year</span></label>
+                                    <input type="number" id="tvm-iy" step="any">
+                                    <button class="fin-cpt" data-compute="iy">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>PV <span class="fin-sub">present value</span></label>
+                                    <input type="number" id="tvm-pv" step="any">
+                                    <button class="fin-cpt" data-compute="pv">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>PMT <span class="fin-sub">payment</span></label>
+                                    <input type="number" id="tvm-pmt" step="any">
+                                    <button class="fin-cpt" data-compute="pmt">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>FV <span class="fin-sub">future value</span></label>
+                                    <input type="number" id="tvm-fv" step="any">
+                                    <button class="fin-cpt" data-compute="fv">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>P/Y <span class="fin-sub">payments/year</span></label>
+                                    <input type="number" id="tvm-py" value="12" step="1" min="1">
+                                </div>
+                                <div class="fin-field">
+                                    <label>C/Y <span class="fin-sub">compounding/year</span></label>
+                                    <input type="number" id="tvm-cy" value="12" step="1" min="1">
+                                </div>
+                            </div>
+                            <div class="fin-result" id="tvm-result"></div>
+                        </div>
+
+                        <!-- Amortization -->
+                        <div class="fin-sheet" id="fin-amort">
+                            <h3>Amortization Schedule</h3>
+                            <p class="fin-hint">Set TVM values first, then generate schedule</p>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Starting Period (P1)</label>
+                                    <input type="number" id="amort-p1" value="1" min="1">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Ending Period (P2)</label>
+                                    <input type="number" id="amort-p2" value="12" min="1">
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="amort-compute">Compute</button>
+                            <div class="fin-result" id="amort-summary"></div>
+                            <div class="amort-table-container">
+                                <table id="amort-table" class="fin-table">
+                                    <thead><tr><th>#</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Cash Flow -->
+                        <div class="fin-sheet" id="fin-cashflow">
+                            <h3>Cash Flow Analysis</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Discount Rate I (%)</label>
+                                    <input type="number" id="cf-rate" value="10" step="any">
+                                </div>
+                            </div>
+                            <div class="cf-entries" id="cf-entries">
+                                <div class="cf-row">
+                                    <span class="cf-label">CF₀</span>
+                                    <input type="number" class="cf-amount" value="-1000" step="any">
+                                    <span class="cf-freq-label">×</span>
+                                    <input type="number" class="cf-freq" value="1" min="1" max="9999" style="width:50px">
+                                </div>
+                            </div>
+                            <div class="cf-buttons">
+                                <button id="cf-add">+ Add CF</button>
+                                <button id="cf-remove">− Remove</button>
+                                <button id="cf-clear">Clear All</button>
+                            </div>
+                            <div class="cf-compute-row">
+                                <button class="fin-action-btn" id="cf-npv-btn">NPV</button>
+                                <button class="fin-action-btn" id="cf-irr-btn">IRR</button>
+                                <button class="fin-action-btn" id="cf-mirr-btn">MIRR</button>
+                                <button class="fin-action-btn" id="cf-payback-btn">Payback</button>
+                                <button class="fin-action-btn" id="cf-pi-btn">PI</button>
+                            </div>
+                            <div id="cf-mirr-extra" style="display:none;">
+                                <label>Finance Rate (%):<input type="number" id="cf-finance-rate" value="10" step="any" style="width:70px"></label>
+                                <label>Reinvest Rate (%):<input type="number" id="cf-reinvest-rate" value="12" step="any" style="width:70px"></label>
+                            </div>
+                            <div class="fin-result" id="cf-result"></div>
+                        </div>
+
+                        <!-- Bond -->
+                        <div class="fin-sheet" id="fin-bond">
+                            <h3>Bond Pricing & Yield</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Settlement Date</label>
+                                    <input type="date" id="bond-sdt">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Maturity Date</label>
+                                    <input type="date" id="bond-rdt">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Coupon Rate (%)</label>
+                                    <input type="number" id="bond-cpn" value="5" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Redemption Value</label>
+                                    <input type="number" id="bond-rv" value="100" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Day Count</label>
+                                    <select id="bond-daycount">
+                                        <option value="ACT">ACT (Actual)</option>
+                                        <option value="360">360</option>
+                                    </select>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Coupon Frequency</label>
+                                    <select id="bond-freq">
+                                        <option value="2">Semi-Annual</option>
+                                        <option value="1">Annual</option>
+                                        <option value="4">Quarterly</option>
+                                        <option value="12">Monthly</option>
+                                    </select>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Yield (YLD %)</label>
+                                    <input type="number" id="bond-yld" step="any">
+                                    <button class="fin-cpt" id="bond-cpt-yld">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Price (PRI)</label>
+                                    <input type="number" id="bond-pri" step="any">
+                                    <button class="fin-cpt" id="bond-cpt-pri">CPT</button>
+                                </div>
+                            </div>
+                            <div class="fin-result" id="bond-result"></div>
+                        </div>
+
+                        <!-- Depreciation -->
+                        <div class="fin-sheet" id="fin-depreciation">
+                            <h3>Depreciation</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Cost</label>
+                                    <input type="number" id="dep-cost" value="10000" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Salvage Value</label>
+                                    <input type="number" id="dep-salvage" value="1000" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Life (years)</label>
+                                    <input type="number" id="dep-life" value="5" min="1">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Year</label>
+                                    <input type="number" id="dep-year" value="1" min="1">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Starting Month</label>
+                                    <input type="number" id="dep-month" value="1" min="1" max="12">
+                                </div>
+                                <div class="fin-field">
+                                    <label>DB Rate (%)</label>
+                                    <input type="number" id="dep-db-rate" value="200" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Method</label>
+                                    <select id="dep-method">
+                                        <option value="SL">Straight Line (SL)</option>
+                                        <option value="SYD">Sum-of-Years (SYD)</option>
+                                        <option value="DB">Declining Balance (DB)</option>
+                                        <option value="MACRS">MACRS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="dep-compute">Compute</button>
+                            <div class="fin-result" id="dep-result"></div>
+                            <div class="amort-table-container">
+                                <table id="dep-table" class="fin-table">
+                                    <thead><tr><th>Year</th><th>Depreciation</th><th>Accum Deprec</th><th>Book Value</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Interest Conversion -->
+                        <div class="fin-sheet" id="fin-iconv">
+                            <h3>Interest Rate Conversion</h3>
+                            <p class="fin-hint">Convert between Nominal (NOM) and Effective (EFF) rates</p>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Nominal Rate NOM (%)</label>
+                                    <input type="number" id="iconv-nom" step="any">
+                                    <button class="fin-cpt" id="iconv-cpt-nom">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Effective Rate EFF (%)</label>
+                                    <input type="number" id="iconv-eff" step="any">
+                                    <button class="fin-cpt" id="iconv-cpt-eff">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>C/Y (compounding periods)</label>
+                                    <input type="number" id="iconv-cy" value="12" min="1">
+                                </div>
+                            </div>
+                            <div class="fin-result" id="iconv-result"></div>
+                            <h3 style="margin-top:16px">APR ↔ APY</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>APR (%)</label>
+                                    <input type="number" id="iconv-apr" step="any">
+                                    <button class="fin-cpt" id="iconv-cpt-apr">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>APY (%)</label>
+                                    <input type="number" id="iconv-apy" step="any">
+                                    <button class="fin-cpt" id="iconv-cpt-apy">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Compounds/Year</label>
+                                    <input type="number" id="iconv-cy2" value="12" min="1">
+                                </div>
+                            </div>
+                            <div class="fin-result" id="iconv-result2"></div>
+                        </div>
+
+                        <!-- Profit Margin -->
+                        <div class="fin-sheet" id="fin-margin">
+                            <h3>Profit Margin Calculator</h3>
+                            <p class="fin-hint">Enter any 2 values and compute the 3rd</p>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Cost</label>
+                                    <input type="number" id="margin-cost" step="any">
+                                    <button class="fin-cpt" id="margin-cpt-cost">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Selling Price</label>
+                                    <input type="number" id="margin-sell" step="any">
+                                    <button class="fin-cpt" id="margin-cpt-sell">CPT</button>
+                                </div>
+                                <div class="fin-field">
+                                    <label>Margin (%)</label>
+                                    <input type="number" id="margin-margin" step="any">
+                                    <button class="fin-cpt" id="margin-cpt-margin">CPT</button>
+                                </div>
+                            </div>
+                            <div class="fin-result" id="margin-result"></div>
+                            <h3 style="margin-top:16px">Markup Calculator</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Cost</label>
+                                    <input type="number" id="markup-cost" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Selling Price</label>
+                                    <input type="number" id="markup-sell" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Markup (%)</label>
+                                    <input type="number" id="markup-pct" step="any">
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="markup-compute">Compute</button>
+                            <div class="fin-result" id="markup-result"></div>
+                        </div>
+
+                        <!-- Breakeven -->
+                        <div class="fin-sheet" id="fin-breakeven">
+                            <h3>Breakeven Analysis</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Fixed Costs (FC)</label>
+                                    <input type="number" id="be-fc" value="50000" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Variable Cost/Unit (VC)</label>
+                                    <input type="number" id="be-vc" value="30" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Price/Unit (P)</label>
+                                    <input type="number" id="be-price" value="50" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Target Profit (PFT)</label>
+                                    <input type="number" id="be-profit" value="0" step="any">
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="be-compute">Compute</button>
+                            <div class="fin-result" id="be-result"></div>
+                        </div>
+
+                        <!-- Percent Change / Compound Interest -->
+                        <div class="fin-sheet" id="fin-pctchg">
+                            <h3>Percent Change</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Old Value</label>
+                                    <input type="number" id="pctchg-old" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>New Value</label>
+                                    <input type="number" id="pctchg-new" step="any">
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="pctchg-compute">Compute</button>
+                            <div class="fin-result" id="pctchg-result"></div>
+
+                            <h3 style="margin-top:16px">Compound Interest</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Principal</label>
+                                    <input type="number" id="ci-principal" value="1000" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Rate (% per year)</label>
+                                    <input type="number" id="ci-rate" value="5" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Time (years)</label>
+                                    <input type="number" id="ci-time" value="10" step="any">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Compounds/Year</label>
+                                    <input type="number" id="ci-n" value="12" min="1">
+                                </div>
+                                <div class="fin-field">
+                                    <label>Continuous?</label>
+                                    <select id="ci-continuous">
+                                        <option value="no">No</option>
+                                        <option value="yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="ci-compute">Compute</button>
+                            <div class="fin-result" id="ci-result"></div>
+
+                            <h3 style="margin-top:16px">Rule of 72</h3>
+                            <div class="fin-fields">
+                                <div class="fin-field">
+                                    <label>Rate (%)</label>
+                                    <input type="number" id="r72-rate" value="6" step="any">
+                                </div>
+                            </div>
+                            <button class="fin-action-btn" id="r72-compute">Compute</button>
+                            <div class="fin-result" id="r72-result"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ============ CONVERTER MODE ============ -->
@@ -266,6 +683,12 @@
                             <option value="energy">Energy</option>
                             <option value="power">Power</option>
                             <option value="angle">Angle</option>
+                            <option value="fuel">Fuel Economy</option>
+                            <option value="frequency">Frequency</option>
+                            <option value="force">Force</option>
+                            <option value="torque">Torque</option>
+                            <option value="density">Density</option>
+                            <option value="flow">Flow Rate</option>
                         </select>
                         <div class="converter-row">
                             <input type="number" id="converter-from-val" value="1" step="any">
@@ -285,26 +708,20 @@
                 <section id="mode-matrix" class="calc-mode">
                     <div class="matrix-container">
                         <div class="matrix-size-controls">
-                            <label>Matrix A rows: <input type="number" id="mat-a-rows" value="2" min="1" max="6"></label>
-                            <label>cols: <input type="number" id="mat-a-cols" value="2" min="1" max="6"></label>
-                            <label>Matrix B rows: <input type="number" id="mat-b-rows" value="2" min="1" max="6"></label>
-                            <label>cols: <input type="number" id="mat-b-cols" value="2" min="1" max="6"></label>
+                            <label>A rows:<input type="number" id="mat-a-rows" value="3" min="1" max="6"></label>
+                            <label>cols:<input type="number" id="mat-a-cols" value="3" min="1" max="6"></label>
+                            <label>B rows:<input type="number" id="mat-b-rows" value="3" min="1" max="6"></label>
+                            <label>cols:<input type="number" id="mat-b-cols" value="3" min="1" max="6"></label>
                             <button id="mat-generate">Generate</button>
                         </div>
                         <div class="matrix-inputs">
-                            <div>
-                                <h4>Matrix A</h4>
-                                <div id="matrix-a-grid" class="matrix-grid"></div>
-                            </div>
-                            <div>
-                                <h4>Matrix B</h4>
-                                <div id="matrix-b-grid" class="matrix-grid"></div>
-                            </div>
+                            <div><h4>Matrix A</h4><div id="matrix-a-grid" class="matrix-grid"></div></div>
+                            <div><h4>Matrix B</h4><div id="matrix-b-grid" class="matrix-grid"></div></div>
                         </div>
                         <div class="matrix-ops">
-                            <button data-matop="add">A + B</button>
-                            <button data-matop="sub">A − B</button>
-                            <button data-matop="mul">A × B</button>
+                            <button data-matop="add">A+B</button>
+                            <button data-matop="sub">A−B</button>
+                            <button data-matop="mul">A×B</button>
                             <button data-matop="det-a">det(A)</button>
                             <button data-matop="det-b">det(B)</button>
                             <button data-matop="trans-a">Aᵀ</button>
@@ -312,12 +729,17 @@
                             <button data-matop="inv-a">A⁻¹</button>
                             <button data-matop="inv-b">B⁻¹</button>
                             <button data-matop="scalar-a">k·A</button>
+                            <button data-matop="trace-a">tr(A)</button>
+                            <button data-matop="rank-a">rank(A)</button>
+                            <button data-matop="eigen-a">Eigen(A)</button>
+                            <button data-matop="rref-a">RREF(A)</button>
+                            <button data-matop="power-a">A^n</button>
                         </div>
                         <div id="matrix-scalar-input" style="display:none;">
-                            <label>Scalar k: <input type="number" id="mat-scalar-k" value="2"></label>
+                            <label>k: <input type="number" id="mat-scalar-k" value="2"></label>
+                            <label>n: <input type="number" id="mat-power-n" value="2" min="1"></label>
                         </div>
-                        <div class="matrix-result">
-                            <h4>Result</h4>
+                        <div class="matrix-result"><h4>Result</h4>
                             <div id="matrix-result-grid" class="matrix-grid"></div>
                             <div id="matrix-result-text"></div>
                         </div>
@@ -327,78 +749,191 @@
                 <!-- ============ STATISTICS MODE ============ -->
                 <section id="mode-statistics" class="calc-mode">
                     <div class="stats-container">
-                        <div class="stats-input-section">
-                            <label>Enter data (comma-separated):</label>
-                            <textarea id="stats-data" rows="3" placeholder="e.g. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10">1, 2, 3, 4, 5</textarea>
-                            <button id="stats-calc-btn">Calculate</button>
+                        <div class="stats-tabs">
+                            <button class="stats-tab active" data-stab="1var">1-Var Stats</button>
+                            <button class="stats-tab" data-stab="2var">2-Var / Regression</button>
+                            <button class="stats-tab" data-stab="distributions">Distributions</button>
                         </div>
-                        <div class="stats-results" id="stats-results">
-                            <table>
-                                <tr><td>Count (n)</td><td id="stat-n">—</td></tr>
-                                <tr><td>Sum (Σx)</td><td id="stat-sum">—</td></tr>
-                                <tr><td>Mean (x̄)</td><td id="stat-mean">—</td></tr>
-                                <tr><td>Median</td><td id="stat-median">—</td></tr>
-                                <tr><td>Mode</td><td id="stat-mode">—</td></tr>
-                                <tr><td>Range</td><td id="stat-range">—</td></tr>
-                                <tr><td>Min</td><td id="stat-min">—</td></tr>
-                                <tr><td>Max</td><td id="stat-max">—</td></tr>
-                                <tr><td>Variance (σ²)</td><td id="stat-variance">—</td></tr>
-                                <tr><td>Std Dev (σ)</td><td id="stat-stddev">—</td></tr>
-                                <tr><td>Sample Variance (s²)</td><td id="stat-svariance">—</td></tr>
-                                <tr><td>Sample Std Dev (s)</td><td id="stat-sstddev">—</td></tr>
-                                <tr><td>Geometric Mean</td><td id="stat-gmean">—</td></tr>
-                                <tr><td>Harmonic Mean</td><td id="stat-hmean">—</td></tr>
-                                <tr><td>Skewness</td><td id="stat-skew">—</td></tr>
-                                <tr><td>Kurtosis</td><td id="stat-kurt">—</td></tr>
-                                <tr><td>Q1 (25th)</td><td id="stat-q1">—</td></tr>
-                                <tr><td>Q3 (75th)</td><td id="stat-q3">—</td></tr>
-                                <tr><td>IQR</td><td id="stat-iqr">—</td></tr>
-                                <tr><td>Sum of Squares</td><td id="stat-sumsq">—</td></tr>
-                            </table>
+
+                        <!-- 1 Var -->
+                        <div class="stats-section active" id="stats-1var">
+                            <div class="stats-input-section">
+                                <label>Enter data (comma-separated):</label>
+                                <textarea id="stats-data" rows="3" placeholder="e.g. 1, 2, 3, 4, 5">1, 2, 3, 4, 5</textarea>
+                                <label>Frequencies (optional, comma-separated):</label>
+                                <input type="text" id="stats-freq" placeholder="e.g. 1, 2, 1, 1, 3">
+                                <button id="stats-calc-btn">Calculate</button>
+                            </div>
+                            <div class="stats-results" id="stats-results">
+                                <table>
+                                    <tr><td>Count (n)</td><td id="stat-n">—</td></tr>
+                                    <tr><td>Sum (Σx)</td><td id="stat-sum">—</td></tr>
+                                    <tr><td>Mean (x̄)</td><td id="stat-mean">—</td></tr>
+                                    <tr><td>Median</td><td id="stat-median">—</td></tr>
+                                    <tr><td>Mode</td><td id="stat-mode">—</td></tr>
+                                    <tr><td>Range</td><td id="stat-range">—</td></tr>
+                                    <tr><td>Min</td><td id="stat-min">—</td></tr>
+                                    <tr><td>Max</td><td id="stat-max">—</td></tr>
+                                    <tr><td>Variance (σ²)</td><td id="stat-variance">—</td></tr>
+                                    <tr><td>Std Dev (σ)</td><td id="stat-stddev">—</td></tr>
+                                    <tr><td>Sample Variance (s²)</td><td id="stat-svariance">—</td></tr>
+                                    <tr><td>Sample Std Dev (s)</td><td id="stat-sstddev">—</td></tr>
+                                    <tr><td>Σx²</td><td id="stat-sumx2">—</td></tr>
+                                    <tr><td>Geometric Mean</td><td id="stat-gmean">—</td></tr>
+                                    <tr><td>Harmonic Mean</td><td id="stat-hmean">—</td></tr>
+                                    <tr><td>Skewness</td><td id="stat-skew">—</td></tr>
+                                    <tr><td>Kurtosis</td><td id="stat-kurt">—</td></tr>
+                                    <tr><td>Q1 (25th)</td><td id="stat-q1">—</td></tr>
+                                    <tr><td>Q3 (75th)</td><td id="stat-q3">—</td></tr>
+                                    <tr><td>IQR</td><td id="stat-iqr">—</td></tr>
+                                    <tr><td>Coeff of Variation</td><td id="stat-cv">—</td></tr>
+                                    <tr><td>Std Error of Mean</td><td id="stat-sem">—</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 2 Var / Regression -->
+                        <div class="stats-section" id="stats-2var">
+                            <div class="stats-input-section">
+                                <label>X data (comma-separated):</label>
+                                <textarea id="stats-xdata" rows="2" placeholder="1, 2, 3, 4, 5">1, 2, 3, 4, 5</textarea>
+                                <label>Y data (comma-separated):</label>
+                                <textarea id="stats-ydata" rows="2" placeholder="2, 4, 5, 4, 5">2, 4, 5, 4, 5</textarea>
+                                <label>Regression Model:</label>
+                                <select id="stats-reg-model">
+                                    <option value="lin">Linear (y=a+bx)</option>
+                                    <option value="ln">Logarithmic (y=a+b·ln(x))</option>
+                                    <option value="exp">Exponential (y=a·eᵇˣ)</option>
+                                    <option value="pow">Power (y=a·xᵇ)</option>
+                                    <option value="quad">Quadratic (y=a+bx+cx²)</option>
+                                </select>
+                                <label>Predict Y for X = <input type="number" id="stats-pred-x" step="any" style="width:80px"></label>
+                                <button id="stats-reg-btn">Calculate Regression</button>
+                            </div>
+                            <div class="fin-result" id="stats-reg-result"></div>
+                            <div class="fin-result" id="stats-corr-result"></div>
+                        </div>
+
+                        <!-- Distributions -->
+                        <div class="stats-section" id="stats-distributions">
+                            <div class="stats-input-section">
+                                <label>Distribution:</label>
+                                <select id="dist-type">
+                                    <option value="normal">Normal (Z)</option>
+                                    <option value="t">Student's t</option>
+                                    <option value="chi2">Chi-Square</option>
+                                    <option value="binomial">Binomial</option>
+                                    <option value="poisson">Poisson</option>
+                                </select>
+                                <div id="dist-params"></div>
+                                <button id="dist-calc-btn">Calculate</button>
+                            </div>
+                            <div class="fin-result" id="dist-result"></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- ============ DATE CALCULATOR MODE ============ -->
+                <!-- ============ EQUATION SOLVER ============ -->
+                <section id="mode-equation" class="calc-mode">
+                    <div class="eq-container">
+                        <div class="eq-tabs">
+                            <button class="eq-tab active" data-eqt="linear">Linear System</button>
+                            <button class="eq-tab" data-eqt="quadratic">Quadratic</button>
+                            <button class="eq-tab" data-eqt="cubic">Cubic</button>
+                            <button class="eq-tab" data-eqt="poly">Polynomial</button>
+                            <button class="eq-tab" data-eqt="numerical">Numerical</button>
+                        </div>
+
+                        <div class="eq-section active" id="eq-linear">
+                            <h3>Linear System Solver (up to 4×4)</h3>
+                            <label>Number of equations: <select id="eq-lin-size">
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                                <option value="4">4</option>
+                            </select></label>
+                            <div id="eq-lin-inputs"></div>
+                            <button class="fin-action-btn" id="eq-lin-solve">Solve</button>
+                            <div class="fin-result" id="eq-lin-result"></div>
+                        </div>
+
+                        <div class="eq-section" id="eq-quadratic">
+                            <h3>Quadratic: ax² + bx + c = 0</h3>
+                            <div class="eq-fields">
+                                <label>a = <input type="number" id="eq-qa" value="1" step="any"></label>
+                                <label>b = <input type="number" id="eq-qb" value="-5" step="any"></label>
+                                <label>c = <input type="number" id="eq-qc" value="6" step="any"></label>
+                            </div>
+                            <button class="fin-action-btn" id="eq-quad-solve">Solve</button>
+                            <div class="fin-result" id="eq-quad-result"></div>
+                        </div>
+
+                        <div class="eq-section" id="eq-cubic">
+                            <h3>Cubic: ax³ + bx² + cx + d = 0</h3>
+                            <div class="eq-fields">
+                                <label>a = <input type="number" id="eq-ca" value="1" step="any"></label>
+                                <label>b = <input type="number" id="eq-cb" value="-6" step="any"></label>
+                                <label>c = <input type="number" id="eq-cc" value="11" step="any"></label>
+                                <label>d = <input type="number" id="eq-cd" value="-6" step="any"></label>
+                            </div>
+                            <button class="fin-action-btn" id="eq-cubic-solve">Solve</button>
+                            <div class="fin-result" id="eq-cubic-result"></div>
+                        </div>
+
+                        <div class="eq-section" id="eq-poly">
+                            <h3>Polynomial Root Finder</h3>
+                            <label>Coefficients (highest degree first, comma-separated):</label>
+                            <input type="text" id="eq-poly-coeffs" value="1, -6, 11, -6" placeholder="e.g. 1, -6, 11, -6 for x³-6x²+11x-6" style="width:100%">
+                            <button class="fin-action-btn" id="eq-poly-solve">Solve</button>
+                            <div class="fin-result" id="eq-poly-result"></div>
+                        </div>
+
+                        <div class="eq-section" id="eq-numerical">
+                            <h3>Numerical Root Finder (Newton's Method)</h3>
+                            <label>f(x) = <input type="text" id="eq-num-fn" value="x^3 - 2*x - 5" style="width:100%"></label>
+                            <label>Initial guess x₀ = <input type="number" id="eq-num-x0" value="2" step="any"></label>
+                            <label>Tolerance = <input type="number" id="eq-num-tol" value="0.0000001" step="any"></label>
+                            <button class="fin-action-btn" id="eq-num-solve">Solve</button>
+                            <div class="fin-result" id="eq-num-result"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ DATE MODE ============ -->
                 <section id="mode-date" class="calc-mode">
                     <div class="date-container">
                         <h3>Date Difference</h3>
                         <div class="date-row">
-                            <label>From: <input type="date" id="date-from"></label>
-                            <label>To: <input type="date" id="date-to"></label>
+                            <label>From:<input type="date" id="date-from"></label>
+                            <label>To:<input type="date" id="date-to"></label>
                             <button id="date-diff-btn">Calculate</button>
                         </div>
                         <div id="date-diff-result" class="date-result"></div>
-
                         <h3>Add / Subtract from Date</h3>
                         <div class="date-row">
-                            <label>Start Date: <input type="date" id="date-start"></label>
-                            <select id="date-add-sub">
-                                <option value="add">Add</option>
-                                <option value="sub">Subtract</option>
-                            </select>
+                            <label>Start:<input type="date" id="date-start"></label>
+                            <select id="date-add-sub"><option value="add">Add</option><option value="sub">Subtract</option></select>
                             <input type="number" id="date-amount" value="7" min="0">
-                            <select id="date-unit">
-                                <option value="days">Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
-                                <option value="years">Years</option>
-                            </select>
+                            <select id="date-unit"><option value="days">Days</option><option value="weeks">Weeks</option><option value="months">Months</option><option value="years">Years</option></select>
                             <button id="date-add-btn">Calculate</button>
                         </div>
                         <div id="date-add-result" class="date-result"></div>
-
                         <h3>Day of Year & Week Number</h3>
                         <div class="date-row">
-                            <label>Date: <input type="date" id="date-info-input"></label>
+                            <label>Date:<input type="date" id="date-info-input"></label>
                             <button id="date-info-btn">Get Info</button>
                         </div>
                         <div id="date-info-result" class="date-result"></div>
+                        <h3>Business Days</h3>
+                        <div class="date-row">
+                            <label>From:<input type="date" id="bdays-from"></label>
+                            <label>To:<input type="date" id="bdays-to"></label>
+                            <button id="bdays-btn">Count</button>
+                        </div>
+                        <div id="bdays-result" class="date-result"></div>
                     </div>
                 </section>
             </main>
 
-            <!-- Memory Panel -->
             <aside id="memory-panel" class="panel">
                 <div class="panel-header">
                     <h3>Memory</h3>
@@ -408,7 +943,6 @@
             </aside>
         </div>
 
-        <!-- Keyboard shortcuts modal -->
         <div id="shortcuts-modal" class="modal">
             <div class="modal-content">
                 <button class="modal-close" id="close-shortcuts">✕</button>
@@ -421,24 +955,17 @@
                     <tr><td>Escape</td><td>Clear</td></tr>
                     <tr><td>( )</td><td>Parentheses</td></tr>
                     <tr><td>p</td><td>π</td></tr>
-                    <tr><td>e</td><td>Euler's number</td></tr>
                     <tr><td>!</td><td>Factorial</td></tr>
-                    <tr><td>s</td><td>sin</td></tr>
-                    <tr><td>c</td><td>cos</td></tr>
-                    <tr><td>t</td><td>tan</td></tr>
-                    <tr><td>l</td><td>log</td></tr>
-                    <tr><td>n</td><td>ln</td></tr>
-                    <tr><td>r</td><td>√</td></tr>
+                    <tr><td>s / c / t</td><td>sin / cos / tan</td></tr>
+                    <tr><td>l / n / r</td><td>log / ln / √</td></tr>
                     <tr><td>^</td><td>Power</td></tr>
                     <tr><td>Ctrl+Z</td><td>Undo</td></tr>
                     <tr><td>?</td><td>Show shortcuts</td></tr>
                 </table>
             </div>
         </div>
-
         <button id="shortcuts-btn" title="Keyboard Shortcuts (?)">⌨</button>
     </div>
-
     <script src="./index.js"></script>
 </body>
 </html>
