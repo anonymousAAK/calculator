@@ -1,47 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculaor</title>
+    <title>TI BA II Plus | Scientific | Graphing Calculator</title>
     <link rel="stylesheet" href="./styles.css" />
 </head>
-
 <body>
-    <div class="outer">
-        <div class="output">
-            <div class="previous-operand"></div>
-            <div id = "display" class="current-operand"><p></p></div>
-        </div>
-        <button class = "button" data-value="clear">CE</button>
-        <button class = "button" data-value="del"> DEL</button>
-        <button class = "button" data-value="/100">%</button>
-        <button class = "button" data-value="/">÷</button>
 
-        <button class = "button" data-value="7">7</button>
-        <button class = "button" data-value="8">8</button>
-        <button class = "button" data-value="9">9</button>
-        <button class = "button" data-value="*">*</button>
+<!-- Mode Tabs -->
+<div id="mode-tabs">
+    <button class="mode-tab active" data-mode="financial">TI BA II Plus</button>
+    <button class="mode-tab" data-mode="scientific">Scientific</button>
+    <button class="mode-tab" data-mode="graphing">Graphing</button>
+</div>
 
-        <button class = "button" data-value="4">4</button>
-        <button class = "button" data-value="5">5</button>
-        <button class = "button" data-value="6">6</button>
-        <button class = "button" data-value="+">+</button>
-
-        <button class = "button" data-value="1">1</button>
-        <button class = "button" data-value="2">2</button>
-        <button class = "button" data-value="3">3</button>
-        <button class = "button" data-value="-">-</button>
-
-        <button class = "button" data-value="%">Re</button>
-        <button class = "button" data-value="0">0</button>
-        <button class = "button" data-value=".">.</button>        
-        <button class = "button" data-value="=">=</button>
-        
-        <script src="./index.js"></script>
+<!-- ===================== FINANCIAL CALCULATOR (TI BA II Plus) ===================== -->
+<div id="financial-calc" class="calc-container active">
+    <div class="fin-display">
+        <div class="fin-indicator" id="fin-indicator"></div>
+        <div class="fin-main-display" id="fin-display">0</div>
+        <div class="fin-label" id="fin-label"></div>
     </div>
-</body>
 
+    <!-- Row 1: TVM top row -->
+    <div class="fin-keys">
+        <button class="fin-btn second-fn" id="fin-2nd">2nd</button>
+        <button class="fin-btn" data-fin="N" data-second="xP/Y"><span class="primary">N</span><span class="second-label">xP/Y</span></button>
+        <button class="fin-btn" data-fin="IY" data-second="P/Y"><span class="primary">I/Y</span><span class="second-label">P/Y</span></button>
+        <button class="fin-btn" data-fin="PV" data-second="AMORT"><span class="primary">PV</span><span class="second-label">AMORT</span></button>
+        <button class="fin-btn" data-fin="PMT" data-second="BGN"><span class="primary">PMT</span><span class="second-label">BGN</span></button>
+        <button class="fin-btn" data-fin="FV" data-second="CLR_TVM"><span class="primary">FV</span><span class="second-label">CLR TVM</span></button>
+
+        <!-- Row 2 -->
+        <button class="fin-btn" data-fin="CF" data-second=""><span class="primary">CF</span></button>
+        <button class="fin-btn" data-fin="NPV"><span class="primary">NPV</span></button>
+        <button class="fin-btn" data-fin="IRR"><span class="primary">IRR</span></button>
+        <button class="fin-btn" data-fin="BOND" data-second="DATE"><span class="primary">BOND</span><span class="second-label">DATE</span></button>
+        <button class="fin-btn" data-fin="DEPR"><span class="primary">DEPR</span></button>
+        <button class="fin-btn" data-fin="STAT" data-second="CLR_WORK"><span class="primary">STAT</span><span class="second-label">CLR W</span></button>
+
+        <!-- Row 3: Enter, arrow, compute -->
+        <button class="fin-btn enter-btn" data-fin="ENTER"><span class="primary">ENTER</span></button>
+        <button class="fin-btn" data-fin="UP"><span class="primary">&#9650;</span></button>
+        <button class="fin-btn" data-fin="DOWN"><span class="primary">&#9660;</span></button>
+        <button class="fin-btn compute-btn" data-fin="CPT"><span class="primary">CPT</span></button>
+        <button class="fin-btn" data-fin="CE"><span class="primary">CE/C</span></button>
+        <button class="fin-btn" data-fin="QUIT" data-second="RESET"><span class="primary">QUIT</span><span class="second-label">RESET</span></button>
+
+        <!-- Row 4: Numbers -->
+        <button class="fin-btn num" data-fin="7">7</button>
+        <button class="fin-btn num" data-fin="8">8</button>
+        <button class="fin-btn num" data-fin="9">9</button>
+        <button class="fin-btn op" data-fin="/" data-second="SQRT"><span class="primary">&divide;</span><span class="second-label">&radic;</span></button>
+        <button class="fin-btn op" data-fin="OPEN_PAREN">(</button>
+        <button class="fin-btn op" data-fin="CLOSE_PAREN">)</button>
+
+        <!-- Row 5 -->
+        <button class="fin-btn num" data-fin="4">4</button>
+        <button class="fin-btn num" data-fin="5">5</button>
+        <button class="fin-btn num" data-fin="6">6</button>
+        <button class="fin-btn op" data-fin="*" data-second="YX"><span class="primary">&times;</span><span class="second-label">y<sup>x</sup></span></button>
+        <button class="fin-btn op" data-fin="LN" data-second="EX"><span class="primary">LN</span><span class="second-label">e<sup>x</sup></span></button>
+        <button class="fin-btn op" data-fin="RECIPROCAL"><span class="primary">1/x</span></button>
+
+        <!-- Row 6 -->
+        <button class="fin-btn num" data-fin="1">1</button>
+        <button class="fin-btn num" data-fin="2">2</button>
+        <button class="fin-btn num" data-fin="3">3</button>
+        <button class="fin-btn op" data-fin="-"><span class="primary">&minus;</span></button>
+        <button class="fin-btn" data-fin="STORE"><span class="primary">STO</span></button>
+        <button class="fin-btn" data-fin="RECALL"><span class="primary">RCL</span></button>
+
+        <!-- Row 7 -->
+        <button class="fin-btn num" data-fin="0">0</button>
+        <button class="fin-btn num" data-fin=".">.</button>
+        <button class="fin-btn" data-fin="PLUSMINUS"><span class="primary">+/&minus;</span></button>
+        <button class="fin-btn op" data-fin="+"><span class="primary">+</span></button>
+        <button class="fin-btn equals-btn" data-fin="=" colspan="2"><span class="primary">=</span></button>
+        <button class="fin-btn" data-fin="FORMAT" data-second="FORMAT"><span class="primary">FORMAT</span></button>
+    </div>
+</div>
+
+<!-- ===================== SCIENTIFIC CALCULATOR ===================== -->
+<div id="scientific-calc" class="calc-container">
+    <div class="sci-display">
+        <div class="sci-mode-indicators">
+            <span id="sci-deg-ind">DEG</span>
+            <span id="sci-shift-ind"></span>
+            <span id="sci-mem-ind"></span>
+        </div>
+        <div class="sci-expression" id="sci-expression"></div>
+        <div class="sci-result" id="sci-display">0</div>
+    </div>
+
+    <div class="sci-keys">
+        <!-- Row 1: Mode/Shift -->
+        <button class="sci-btn shift-btn" id="sci-shift">SHIFT</button>
+        <button class="sci-btn" id="sci-alpha">ALPHA</button>
+        <button class="sci-btn mode-btn" data-sci="DEG_RAD">DEG</button>
+        <button class="sci-btn" data-sci="HYP">HYP</button>
+        <button class="sci-btn func" data-sci="FRAC">a b/c</button>
+
+        <!-- Row 2: Memory -->
+        <button class="sci-btn mem-btn" data-sci="MC">MC</button>
+        <button class="sci-btn mem-btn" data-sci="MR">MR</button>
+        <button class="sci-btn mem-btn" data-sci="MS">MS</button>
+        <button class="sci-btn mem-btn" data-sci="M+">M+</button>
+        <button class="sci-btn mem-btn" data-sci="M-">M-</button>
+
+        <!-- Row 3: Advanced functions -->
+        <button class="sci-btn func" data-sci="x2" data-shift="SQRT"><span class="primary">x<sup>2</sup></span><span class="shift-label">&radic;</span></button>
+        <button class="sci-btn func" data-sci="x3" data-shift="CBRT"><span class="primary">x<sup>3</sup></span><span class="shift-label"><sup>3</sup>&radic;</span></button>
+        <button class="sci-btn func" data-sci="yx" data-shift="NTHROOT"><span class="primary">y<sup>x</sup></span><span class="shift-label"><sup>x</sup>&radic;y</span></button>
+        <button class="sci-btn func" data-sci="10x" data-shift="LOG"><span class="primary">10<sup>x</sup></span><span class="shift-label">log</span></button>
+        <button class="sci-btn func" data-sci="EXP" data-shift="LN"><span class="primary">e<sup>x</sup></span><span class="shift-label">ln</span></button>
+
+        <!-- Row 4: Trig -->
+        <button class="sci-btn func" data-sci="SIN" data-shift="ASIN"><span class="primary">sin</span><span class="shift-label">sin<sup>-1</sup></span></button>
+        <button class="sci-btn func" data-sci="COS" data-shift="ACOS"><span class="primary">cos</span><span class="shift-label">cos<sup>-1</sup></span></button>
+        <button class="sci-btn func" data-sci="TAN" data-shift="ATAN"><span class="primary">tan</span><span class="shift-label">tan<sup>-1</sup></span></button>
+        <button class="sci-btn func" data-sci="FACT"><span class="primary">n!</span></button>
+        <button class="sci-btn func" data-sci="RECIPROCAL"><span class="primary">1/x</span></button>
+
+        <!-- Row 5: More functions -->
+        <button class="sci-btn func" data-sci="NPR" data-shift="NCR"><span class="primary">nPr</span><span class="shift-label">nCr</span></button>
+        <button class="sci-btn func" data-sci="ABS"><span class="primary">|x|</span></button>
+        <button class="sci-btn func" data-sci="PI" data-shift="E_CONST"><span class="primary">&pi;</span><span class="shift-label">e</span></button>
+        <button class="sci-btn func" data-sci="EE"><span class="primary">EE</span></button>
+        <button class="sci-btn func" data-sci="PERCENT"><span class="primary">%</span></button>
+
+        <!-- Row 6: Parens, CE, operators -->
+        <button class="sci-btn paren" data-sci="(">(</button>
+        <button class="sci-btn paren" data-sci=")">)</button>
+        <button class="sci-btn clear-btn" data-sci="CE">CE</button>
+        <button class="sci-btn clear-btn" data-sci="AC">AC</button>
+        <button class="sci-btn op-btn" data-sci="DEL">DEL</button>
+
+        <!-- Row 7: Numbers + operators -->
+        <button class="sci-btn num-btn" data-sci="7">7</button>
+        <button class="sci-btn num-btn" data-sci="8">8</button>
+        <button class="sci-btn num-btn" data-sci="9">9</button>
+        <button class="sci-btn op-btn" data-sci="/">&divide;</button>
+        <button class="sci-btn op-btn" data-sci="MOD">mod</button>
+
+        <!-- Row 8 -->
+        <button class="sci-btn num-btn" data-sci="4">4</button>
+        <button class="sci-btn num-btn" data-sci="5">5</button>
+        <button class="sci-btn num-btn" data-sci="6">6</button>
+        <button class="sci-btn op-btn" data-sci="*">&times;</button>
+        <button class="sci-btn op-btn" data-sci="PLUSMINUS">+/&minus;</button>
+
+        <!-- Row 9 -->
+        <button class="sci-btn num-btn" data-sci="1">1</button>
+        <button class="sci-btn num-btn" data-sci="2">2</button>
+        <button class="sci-btn num-btn" data-sci="3">3</button>
+        <button class="sci-btn op-btn" data-sci="-">&minus;</button>
+        <button class="sci-btn op-btn rand-btn" data-sci="RAN"><span class="primary">Ran#</span></button>
+
+        <!-- Row 10 -->
+        <button class="sci-btn num-btn zero-btn" data-sci="0">0</button>
+        <button class="sci-btn num-btn" data-sci=".">.</button>
+        <button class="sci-btn func" data-sci="ANS">ANS</button>
+        <button class="sci-btn op-btn" data-sci="+">+</button>
+        <button class="sci-btn equals-btn" data-sci="=">=</button>
+    </div>
+</div>
+
+<!-- ===================== GRAPHING CALCULATOR ===================== -->
+<div id="graphing-calc" class="calc-container">
+    <div class="graph-panel">
+        <!-- Function input panel -->
+        <div class="graph-func-panel">
+            <div class="graph-func-header">
+                <span>Functions</span>
+                <button id="graph-add-func" class="graph-toolbar-btn">+ Add</button>
+            </div>
+            <div id="graph-func-list">
+                <div class="graph-func-row" data-idx="0">
+                    <input type="checkbox" checked class="graph-func-toggle" data-idx="0" />
+                    <span class="graph-func-color" style="background:#e74c3c"></span>
+                    <label>Y1=</label>
+                    <input type="text" class="graph-func-input" data-idx="0" placeholder="e.g. sin(x)" value="" />
+                </div>
+            </div>
+
+            <!-- Window settings -->
+            <div class="graph-window-settings">
+                <div class="graph-window-header">Window</div>
+                <div class="graph-window-row">
+                    <label>Xmin</label><input type="number" id="graph-xmin" value="-10" step="1" />
+                    <label>Xmax</label><input type="number" id="graph-xmax" value="10" step="1" />
+                </div>
+                <div class="graph-window-row">
+                    <label>Ymin</label><input type="number" id="graph-ymin" value="-10" step="1" />
+                    <label>Ymax</label><input type="number" id="graph-ymax" value="10" step="1" />
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="graph-toolbar">
+                <button id="graph-plot-btn" class="graph-toolbar-btn primary-btn">Graph</button>
+                <button id="graph-zoom-in" class="graph-toolbar-btn">Zoom +</button>
+                <button id="graph-zoom-out" class="graph-toolbar-btn">Zoom -</button>
+                <button id="graph-zoom-fit" class="graph-toolbar-btn">Fit</button>
+                <button id="graph-trace-btn" class="graph-toolbar-btn">Trace</button>
+                <button id="graph-table-btn" class="graph-toolbar-btn">Table</button>
+                <button id="graph-clear-btn" class="graph-toolbar-btn">Clear</button>
+            </div>
+
+            <!-- Trace / Intersect info -->
+            <div class="graph-info" id="graph-info"></div>
+
+            <!-- Table output -->
+            <div class="graph-table-container" id="graph-table-container" style="display:none">
+                <div class="graph-table-header">
+                    <span>Table</span>
+                    <div>
+                        <label>Start</label><input type="number" id="table-start" value="-5" step="1" />
+                        <label>Step</label><input type="number" id="table-step" value="1" step="0.5" />
+                        <button id="table-gen-btn" class="graph-toolbar-btn">Generate</button>
+                    </div>
+                </div>
+                <div class="graph-table-scroll">
+                    <table id="graph-table">
+                        <thead><tr><th>X</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analysis tools -->
+            <div class="graph-analysis">
+                <button class="graph-toolbar-btn" id="graph-zero-btn">Zero</button>
+                <button class="graph-toolbar-btn" id="graph-min-btn">Minimum</button>
+                <button class="graph-toolbar-btn" id="graph-max-btn">Maximum</button>
+                <button class="graph-toolbar-btn" id="graph-intersect-btn">Intersect</button>
+                <button class="graph-toolbar-btn" id="graph-derivative-btn">dy/dx</button>
+                <button class="graph-toolbar-btn" id="graph-integral-btn">&int; f(x)dx</button>
+            </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="graph-canvas-container">
+            <canvas id="graph-canvas" width="700" height="600"></canvas>
+            <div class="graph-coords" id="graph-coords"></div>
+        </div>
+    </div>
+</div>
+
+<script src="./index.js"></script>
+</body>
 </html>
