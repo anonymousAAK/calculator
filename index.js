@@ -62,6 +62,7 @@ const Sci = (() => {
     let pendingOp = null;  // pending operator string
     let pendingOpSym = ''; // display symbol of pending op
     let justCalc  = false; // just pressed =
+    let waitingForOperand = false; // next digit should replace current
     let openParens = 0;
     let memory    = 0;
     let memHasVal = false;
@@ -132,6 +133,7 @@ const Sci = (() => {
         pendingOp = null;
         pendingOpSym = '';
         justCalc  = true;
+        waitingForOperand = false;
         twoArgFn  = null;
         twoArgA   = null;
         openParens = 0;
@@ -144,21 +146,23 @@ const Sci = (() => {
 
         // ── Digits ──
         if (/^[0-9]$/.test(k)) {
-            if (justCalc) {
-                current = k; history = ''; justCalc = false;
-                if (pendingOp) history = fmtNum(prevVal) + ' ' + pendingOpSym;
+            if (justCalc || waitingForOperand) {
+                current = k;
+                justCalc = false;
+                waitingForOperand = false;
             } else {
                 current = current === '0' ? k : current + k;
-                // keep history showing the running equation
-                if (pendingOp) history = fmtNum(prevVal) + ' ' + pendingOpSym + ' ' + current;
-                else history = '';
             }
+            history = pendingOp ? fmtNum(prevVal) + ' ' + pendingOpSym + ' ' + current : '';
             render(); return;
         }
 
         if (k === '.') {
-            if (justCalc) { current = '0.'; history = ''; justCalc = false; }
-            else if (!current.includes('.')) current += '.';
+            if (justCalc || waitingForOperand) {
+                current = '0.'; justCalc = false; waitingForOperand = false;
+            } else if (!current.includes('.')) {
+                current += '.';
+            }
             if (pendingOp) history = fmtNum(prevVal) + ' ' + pendingOpSym + ' ' + current;
             render(); return;
         }
@@ -167,19 +171,19 @@ const Sci = (() => {
         if (['add','sub','mul','div','mod'].includes(k)) {
             const sym = opSymbols[k];
             const cur = curNum();
-            if (pendingOp && !justCalc) {
+            if (pendingOp && !justCalc && !waitingForOperand) {
                 // chain: evaluate left side first
                 const result = applyOp(pendingOp, prevVal, cur);
                 prevVal = isNaN(result) ? cur : result;
-                history = fmtNum(prevVal) + ' ' + sym;
-                current = fmtNum(prevVal);
             } else {
                 prevVal = cur;
-                history = fmtNum(prevVal) + ' ' + sym;
             }
+            history = fmtNum(prevVal) + ' ' + sym;
+            current = fmtNum(prevVal);
             pendingOp    = k;
             pendingOpSym = sym;
             justCalc     = false;
+            waitingForOperand = true;
             render(); return;
         }
 
@@ -206,7 +210,7 @@ const Sci = (() => {
         // ── AC / C ──
         if (k === 'ac') {
             current = '0'; history = ''; prevVal = null; pendingOp = null;
-            pendingOpSym = ''; justCalc = false; openParens = 0;
+            pendingOpSym = ''; justCalc = false; waitingForOperand = false; openParens = 0;
             twoArgFn = null; twoArgA = null;
             render(); return;
         }
