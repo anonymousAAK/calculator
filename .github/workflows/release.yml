@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*'          # triggers on any tag like v1.0.0, v1.2.3, etc.
+  workflow_dispatch:  # allows manual trigger from GitHub Actions tab
+    inputs:
+      tag:
+        description: 'Tag / release name to upload to (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
 
 permissions:
   contents: write    # needed to create releases and upload assets
@@ -51,21 +57,23 @@ jobs:
 
       - name: Rename artifact
         run: |
+          TAG=${{ github.ref_name != 'main' && github.ref_name || github.event.inputs.tag }}
           cp calculator-win/target/x86_64-pc-windows-gnu/release/calculator.exe \
-             calculator-win/target/calculator-${{ github.ref_name }}-windows-x64.exe
+             calculator-win/target/calculator-${TAG}-windows-x64.exe
+          echo "TAG=${TAG}" >> $GITHUB_ENV
 
       - name: Create GitHub Release and upload exe
         uses: softprops/action-gh-release@v2
         with:
-          name: "Calculator ${{ github.ref_name }}"
-          tag_name: ${{ github.ref_name }}
+          name: "Calculator ${{ env.TAG }}"
+          tag_name: ${{ env.TAG }}
           draft: false
           prerelease: false
           body: |
-            ## TI BA II Plus | Scientific | Graphing Calculator ${{ github.ref_name }}
+            ## TI BA II Plus | Scientific | Graphing Calculator ${{ env.TAG }}
 
             ### Download
-            Click **calculator-${{ github.ref_name }}-windows-x64.exe** below to download.
+            Click **calculator-${{ env.TAG }}-windows-x64.exe** below to download.
             No installer needed — just run it.
 
             ### Features
@@ -76,4 +84,4 @@ jobs:
             ### Requirements
             Windows 10/11 x64. No install required.
           files: |
-            calculator-win/target/calculator-${{ github.ref_name }}-windows-x64.exe
+            calculator-win/target/calculator-${{ env.TAG }}-windows-x64.exe
