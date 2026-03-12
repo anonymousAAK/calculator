@@ -1,0 +1,79 @@
+name: Build & Release Windows Calculator
+
+on:
+  push:
+    tags:
+      - 'v*'          # triggers on any tag like v1.0.0, v1.2.3, etc.
+
+permissions:
+  contents: write    # needed to create releases and upload assets
+
+jobs:
+  build-windows:
+    name: Build Windows .exe
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-gnu
+
+      - name: Install mingw-w64 cross-compiler
+        run: sudo apt-get install -y mingw-w64
+
+      - name: Configure linker for Windows target
+        run: |
+          mkdir -p calculator-win/.cargo
+          cat > calculator-win/.cargo/config.toml <<'EOF'
+          [target.x86_64-pc-windows-gnu]
+          linker = "x86_64-w64-mingw32-gcc"
+          ar     = "x86_64-w64-mingw32-ar"
+          EOF
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            calculator-win/target
+          key: ${{ runner.os }}-cargo-windows-${{ hashFiles('calculator-win/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-windows-
+
+      - name: Build release exe
+        working-directory: calculator-win
+        run: cargo build --release --target x86_64-pc-windows-gnu
+
+      - name: Rename artifact
+        run: |
+          cp calculator-win/target/x86_64-pc-windows-gnu/release/calculator.exe \
+             calculator-win/target/calculator-${{ github.ref_name }}-windows-x64.exe
+
+      - name: Create GitHub Release and upload exe
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Calculator ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body: |
+            ## TI BA II Plus | Scientific | Graphing Calculator ${{ github.ref_name }}
+
+            ### Download
+            Click **calculator-${{ github.ref_name }}-windows-x64.exe** below to download.
+            No installer needed — just run it.
+
+            ### Features
+            - **TI BA II Plus** — TVM (N/I·Y/PV/PMT/FV/CPT), NPV, IRR, Amortization, Bond, Depreciation (SL/SYD/DB), Statistics + regression, BGN/END, P/Y, 2nd key
+            - **Scientific** — Trig + inverses + hyperbolic, log/ln, powers/roots, n!/nPr/nCr, π/e, DEG/RAD, memory, full expression evaluator
+            - **Graphing** — 8 simultaneous functions, pan/zoom/drag, trace, table, zero/min/max/intersection/dy·dx/∫f(x)dx
+
+            ### Requirements
+            Windows 10/11 x64. No install required.
+          files: |
+            calculator-win/target/calculator-${{ github.ref_name }}-windows-x64.exe
