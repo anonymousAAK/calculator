@@ -822,13 +822,13 @@ const Graph = (() => {
 
     function draw() {
         const W=canvas.width, H=canvas.height;
-        ctx.fillStyle='#0a0a0a';
+        ctx.fillStyle='#06060a';
         ctx.fillRect(0,0,W,H);
 
         // Grid
         const xs=niceStep(xMax-xMin), ys=niceStep(yMax-yMin);
-        ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=.8;
-        ctx.font='9px Menlo,monospace'; ctx.fillStyle='#333'; ctx.textAlign='center';
+        ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=.8;
+        ctx.font='9px Inter,Menlo,monospace'; ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.textAlign='center';
         for (let x=Math.ceil(xMin/xs)*xs; x<=xMax; x+=xs) {
             const cx=toX(x);
             ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,H); ctx.stroke();
@@ -842,7 +842,7 @@ const Graph = (() => {
         }
 
         // Axes
-        ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1.5;
+        ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1.5;
         if (yMin<=0&&yMax>=0){ctx.beginPath();ctx.moveTo(0,toY(0));ctx.lineTo(W,toY(0));ctx.stroke();}
         if (xMin<=0&&xMax>=0){ctx.beginPath();ctx.moveTo(toX(0),0);ctx.lineTo(toX(0),H);ctx.stroke();}
 
